@@ -123,7 +123,9 @@ namespace lpzrobots {
 
 		// returns pointer to gripper
 		virtual Gripper* getGripper();
-		virtual void testFnc();
+		virtual void addGrippables(std::vector<Primitive*> objects);
+		virtual void removeGrippables(std::vector<Primitive*> objects);
+		virtual void removeAllGrippables();
     
   protected:
     /** creates vehicle at desired pose

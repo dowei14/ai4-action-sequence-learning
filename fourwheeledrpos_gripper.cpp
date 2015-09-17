@@ -308,13 +308,21 @@ namespace lpzrobots {
     return joints[i];
   }
 
-	// returns pointer to gripper
+	// DSW
 	Gripper* FourWheeledRPosGripper::getGripper(){
 		return gripper;
 	}
 
-	void FourWheeledRPosGripper::testFnc(){
-		std::cout<<std::endl<<std::endl<<"test"<<std::endl<<std::endl;
+	void FourWheeledRPosGripper::addGrippables(std::vector<Primitive*> objects){
+		gripper->addGrippables(objects);
+	}
+
+	void FourWheeledRPosGripper::removeGrippables(std::vector<Primitive*> objects){
+		gripper->removeGrippables(objects);
+	}
+	
+	void FourWheeledRPosGripper::removeAllGrippables(){
+		gripper->removeAllGrippables();
 	}
 
   /** destroys vehicle and space

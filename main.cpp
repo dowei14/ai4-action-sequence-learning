@@ -151,6 +151,7 @@ public:
     //setting position and orientation
     vehicle3->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 
+		vehicle3->addGrippables(grippables);
 		
 		qcontroller = new EmptyController("1","1");
 		global.configs.push_back(qcontroller);
@@ -171,8 +172,8 @@ public:
 		
 // trying to get the gripper in scope so I can attach b1 to its list of graspable objects		
 		// DSW
-    Gripper* gripper = vehicle3->getGripper();
-    gripper->addGrippables(grippables);
+//    Gripper* gripper = vehicle3->getGripper();
+//    gripper->addGrippables(grippables);
 
 
 	}
