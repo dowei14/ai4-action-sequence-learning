@@ -35,14 +35,13 @@ namespace lpzrobots {
     : maxDistance(maxDistance), exponent(exponent), dimensions (dimensions), local_coords(local_coordinates){
     own=0;
     ref=0;
-  //  setBaseInfo(SensorMotorInfo("RelPos-Old-").changequantity(SensorMotorInfo::Distance).changemin(0));
- //   setNamingFunc([dimensions](int index) {return dimensions2String(dimensions).substr(index,1);});
+    setBaseInfo(SensorMotorInfo("RelPos-Old-").changequantity(SensorMotorInfo::Distance).changemin(0));
+    setNamingFunc([dimensions](int index) {return dimensions2String(dimensions).substr(index,1);});
   }
 
   void RelativePositionSensor::init(Primitive* own, Joint* joint){
     this->own = own;
   }
-
   void RelativePositionSensor::setReference(Primitive* ref){
     this->ref = ref;
   }
@@ -64,12 +63,12 @@ namespace lpzrobots {
     double scale = pow(v.length() / maxDistance, exponent);
     v *= (1/maxDistance)*scale;
 /// in order to use the new sensor interface right away we swap then sensor values z and x here (it was done in the robot before)
-//    if (dimensions & Z) s.push_back(v.z());
-//    if (dimensions & Y) s.push_back(v.y());
-//    if (dimensions & X) s.push_back(v.x());
-    if (dimensions & X) s.push_back(v.x());
-    if (dimensions & Y) s.push_back(v.y());
     if (dimensions & Z) s.push_back(v.z());
+    if (dimensions & Y) s.push_back(v.y());
+    if (dimensions & X) s.push_back(v.x());
+//    if (dimensions & X) s.push_back(v.x());
+//    if (dimensions & Y) s.push_back(v.y());
+//    if (dimensions & Z) s.push_back(v.z());
     return s;
   }
 

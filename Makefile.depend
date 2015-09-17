@@ -207,15 +207,11 @@ main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/od
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/axis.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/inspectable.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/nimm4.h
-main.o: ./fourwheeledrpos.h
+main.o: ./fourwheeledrpos_gripper.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/oderobot.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/raysensorbank.h
-main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/contactsensor.h
-main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/color.h
-main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/physicalsensor.h
-main.o: relativepositionsensor.h
-main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensor.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/joint.h
+main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/gripper.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackrobots.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/playground.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/mathutils.h
@@ -225,185 +221,204 @@ main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/od
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/passivebox.h
 main.o: emptycontroller.h
 main.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/controller_misc.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/ode.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/odeconfig.h
-fourwheeledrpos.o: /usr/include/stdio.h /usr/include/features.h
-fourwheeledrpos.o: /usr/include/stdc-predef.h /usr/include/libio.h
-fourwheeledrpos.o: /usr/include/_G_config.h /usr/include/wchar.h
-fourwheeledrpos.o: /usr/include/xlocale.h /usr/include/stdlib.h
-fourwheeledrpos.o: /usr/include/alloca.h /usr/include/math.h
-fourwheeledrpos.o: /usr/include/string.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/compatibility.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/common.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/error.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/odeinit.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/contact.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/memory.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/odemath.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/matrix.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/timer.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/rotation.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/mass.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/misc.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/objects.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/odecpp.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/collision_space.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/collision.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/collision_trimesh.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/odecpp_collision.h
-fourwheeledrpos.o: /home/dominik/include/ode-dbl/export-dif.h
-fourwheeledrpos.o: /usr/include/assert.h /usr/include/osg/Matrix
-fourwheeledrpos.o: /usr/include/osg/Config /usr/include/osg/Matrixd
-fourwheeledrpos.o: /usr/include/osg/Object /usr/include/osg/Referenced
-fourwheeledrpos.o: /usr/include/osg/Export
-fourwheeledrpos.o: /usr/include/OpenThreads/ScopedLock
-fourwheeledrpos.o: /usr/include/OpenThreads/Mutex
-fourwheeledrpos.o: /usr/include/OpenThreads/Exports
-fourwheeledrpos.o: /usr/include/OpenThreads/Config
-fourwheeledrpos.o: /usr/include/OpenThreads/Atomic /usr/include/osg/CopyOp
-fourwheeledrpos.o: /usr/include/osg/ref_ptr /usr/include/osg/Notify
-fourwheeledrpos.o: /usr/include/osg/Vec3d /usr/include/osg/Vec2d
-fourwheeledrpos.o: /usr/include/osg/Vec2f /usr/include/osg/Math
-fourwheeledrpos.o: /usr/include/osg/Vec3f /usr/include/osg/Vec4d
-fourwheeledrpos.o: /usr/include/osg/Vec4f /usr/include/osg/Quat
-fourwheeledrpos.o: /usr/include/osg/Matrixf ./fourwheeledrpos.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/oderobot.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/nimm4.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/oderobot.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/abstractrobot.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_adds.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/backcaller.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_map.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/position.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/sensormotorinfo.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/types.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/storeable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/odehandle.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_map.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/substance.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osghandle.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgforwarddecl.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/color.h
-fourwheeledrpos.o: /usr/include/osg/Vec4
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/colorschema.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/types.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_adds.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/matrix.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/storeable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/globaldata.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/odeconfig.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sound.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/pos.h
-fourwheeledrpos.o: /usr/include/osg/Vec3
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/position.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/tmpobject.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/pose.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoption.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/globaldatabase.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/agent.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/wiredcontroller.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoptionengine.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoption.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/abstractcontroller.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/inspectable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/randomgenerator.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/mac_drand48r.h
-fourwheeledrpos.o: /usr/include/limits.h /usr/include/limits.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackrobots.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurablelist.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/backcallervector.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensormotorinfoable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/sensormotorinfo.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/motor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/tmpprimitive.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgprimitive.h
-fourwheeledrpos.o: /usr/include/osgDB/ReadFile /usr/include/osg/Node
-fourwheeledrpos.o: /usr/include/osg/StateSet /usr/include/osg/StateAttribute
-fourwheeledrpos.o: /usr/include/osg/StateAttributeCallback
-fourwheeledrpos.o: /usr/include/osg/Shader /usr/include/osg/GL2Extensions
-fourwheeledrpos.o: /usr/include/osg/GL /usr/include/GL/gl.h
-fourwheeledrpos.o: /usr/include/GL/glext.h /usr/include/inttypes.h
-fourwheeledrpos.o: /usr/include/stdint.h /usr/include/osg/buffered_value
-fourwheeledrpos.o: /usr/include/osg/DisplaySettings /usr/include/osg/Uniform
-fourwheeledrpos.o: /usr/include/osg/Array /usr/include/osg/MixinVector
-fourwheeledrpos.o: /usr/include/osg/Vec2b /usr/include/osg/Vec3b
-fourwheeledrpos.o: /usr/include/osg/Vec4b /usr/include/osg/Vec2s
-fourwheeledrpos.o: /usr/include/osg/Vec3s /usr/include/osg/Vec4s
-fourwheeledrpos.o: /usr/include/osg/Vec2i /usr/include/osg/Vec3i
-fourwheeledrpos.o: /usr/include/osg/Vec4i /usr/include/osg/Vec2ub
-fourwheeledrpos.o: /usr/include/osg/Vec3ub /usr/include/osg/Vec4ub
-fourwheeledrpos.o: /usr/include/osg/Vec2us /usr/include/osg/Vec3us
-fourwheeledrpos.o: /usr/include/osg/Vec4us /usr/include/osg/Vec2ui
-fourwheeledrpos.o: /usr/include/osg/Vec3ui /usr/include/osg/Vec4ui
-fourwheeledrpos.o: /usr/include/osg/Vec2 /usr/include/osg/BufferObject
-fourwheeledrpos.o: /usr/include/osg/FrameStamp
-fourwheeledrpos.o: /usr/include/osg/BoundingSphere
-fourwheeledrpos.o: /usr/include/osg/NodeCallback /usr/include/osg/Image
-fourwheeledrpos.o: /usr/include/osg/ArgumentParser
-fourwheeledrpos.o: /usr/include/osg/ApplicationUsage
-fourwheeledrpos.o: /usr/include/osgDB/Export /usr/include/osgDB/Registry
-fourwheeledrpos.o: /usr/include/OpenThreads/ReentrantMutex
-fourwheeledrpos.o: /usr/include/OpenThreads/Thread /usr/include/osg/KdTree
-fourwheeledrpos.o: /usr/include/osg/Shape /usr/include/osg/Plane
-fourwheeledrpos.o: /usr/include/osg/BoundingBox /usr/include/osg/Geometry
-fourwheeledrpos.o: /usr/include/osg/Drawable /usr/include/osg/PrimitiveSet
-fourwheeledrpos.o: /usr/include/osg/RenderInfo /usr/include/osg/State
-fourwheeledrpos.o: /usr/include/osg/Observer /usr/include/osg/Timer
-fourwheeledrpos.o: /usr/include/osg/ShaderComposer /usr/include/osg/Program
-fourwheeledrpos.o: /usr/include/osg/Polytope /usr/include/osg/fast_back_stack
-fourwheeledrpos.o: /usr/include/osg/Viewport
-fourwheeledrpos.o: /usr/include/osg/GLBeginEndAdapter
-fourwheeledrpos.o: /usr/include/osg/ArrayDispatchers
-fourwheeledrpos.o: /usr/include/osg/GraphicsCostEstimator
-fourwheeledrpos.o: /usr/include/osg/View /usr/include/osg/Camera
-fourwheeledrpos.o: /usr/include/osg/Transform /usr/include/osg/Group
-fourwheeledrpos.o: /usr/include/osg/NodeVisitor /usr/include/osg/ColorMask
-fourwheeledrpos.o: /usr/include/osg/CullSettings /usr/include/osg/ClearNode
-fourwheeledrpos.o: /usr/include/osg/Texture /usr/include/osg/GraphicsContext
-fourwheeledrpos.o: /usr/include/osg/GraphicsThread
-fourwheeledrpos.o: /usr/include/osg/OperationThread
-fourwheeledrpos.o: /usr/include/osg/observer_ptr
-fourwheeledrpos.o: /usr/include/OpenThreads/Barrier
-fourwheeledrpos.o: /usr/include/OpenThreads/Condition
-fourwheeledrpos.o: /usr/include/OpenThreads/Block /usr/include/osg/Stats
-fourwheeledrpos.o: /usr/include/osg/Light /usr/include/osgDB/DynamicLibrary
-fourwheeledrpos.o: /usr/include/osgDB/ReaderWriter
-fourwheeledrpos.o: /usr/include/osgDB/AuthenticationMap
-fourwheeledrpos.o: /usr/include/osgDB/Options /usr/include/osgDB/Callbacks
-fourwheeledrpos.o: /usr/include/osgDB/FileCache
-fourwheeledrpos.o: /usr/include/osgDB/DatabaseRevisions
-fourwheeledrpos.o: /usr/include/osg/ObserverNodePath
-fourwheeledrpos.o: /usr/include/osgDB/DotOsgWrapper /usr/include/osgDB/Input
-fourwheeledrpos.o: /usr/include/osgDB/Output /usr/include/osgDB/fstream
-fourwheeledrpos.o: /usr/include/osgDB/ObjectWrapper
-fourwheeledrpos.o: /usr/include/osgDB/Serializer
-fourwheeledrpos.o: /usr/include/osgDB/InputStream /usr/include/osg/Endian
-fourwheeledrpos.o: /usr/include/osgDB/StreamOperator
-fourwheeledrpos.o: /usr/include/osgDB/DataTypes
-fourwheeledrpos.o: /usr/include/osgDB/OutputStream
-fourwheeledrpos.o: /usr/include/osgDB/SharedStateManager
-fourwheeledrpos.o: /usr/include/osg/Geode /usr/include/osgDB/ImageProcessor
-fourwheeledrpos.o: /usr/include/osgText/Text /usr/include/osgText/TextBase
-fourwheeledrpos.o: /usr/include/osgText/String /usr/include/osgText/Export
-fourwheeledrpos.o: /usr/include/osgText/KerningType /usr/include/osgText/Font
-fourwheeledrpos.o: /usr/include/osg/TexEnv /usr/include/osgText/Glyph
-fourwheeledrpos.o: /usr/include/osg/Texture2D /usr/include/osgText/Style
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/raysensorbank.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/raysensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/primitive.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgprimitive.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/physicalsensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/inspectable.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/contactsensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/color.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/physicalsensor.h
-fourwheeledrpos.o: relativepositionsensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/joint.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/irsensor.h
-fourwheeledrpos.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/primitive.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/ode.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/odeconfig.h
+fourwheeledrpos_gripper.o: /usr/include/stdio.h /usr/include/features.h
+fourwheeledrpos_gripper.o: /usr/include/stdc-predef.h /usr/include/libio.h
+fourwheeledrpos_gripper.o: /usr/include/_G_config.h /usr/include/wchar.h
+fourwheeledrpos_gripper.o: /usr/include/xlocale.h /usr/include/stdlib.h
+fourwheeledrpos_gripper.o: /usr/include/alloca.h /usr/include/math.h
+fourwheeledrpos_gripper.o: /usr/include/string.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/compatibility.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/common.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/error.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/odeinit.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/contact.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/memory.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/odemath.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/matrix.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/timer.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/rotation.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/mass.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/misc.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/objects.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/odecpp.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/collision_space.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/collision.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/collision_trimesh.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/odecpp_collision.h
+fourwheeledrpos_gripper.o: /home/dominik/include/ode-dbl/export-dif.h
+fourwheeledrpos_gripper.o: /usr/include/assert.h /usr/include/osg/Matrix
+fourwheeledrpos_gripper.o: /usr/include/osg/Config /usr/include/osg/Matrixd
+fourwheeledrpos_gripper.o: /usr/include/osg/Object
+fourwheeledrpos_gripper.o: /usr/include/osg/Referenced
+fourwheeledrpos_gripper.o: /usr/include/osg/Export
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/ScopedLock
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Mutex
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Exports
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Config
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Atomic
+fourwheeledrpos_gripper.o: /usr/include/osg/CopyOp /usr/include/osg/ref_ptr
+fourwheeledrpos_gripper.o: /usr/include/osg/Notify /usr/include/osg/Vec3d
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec2d /usr/include/osg/Vec2f
+fourwheeledrpos_gripper.o: /usr/include/osg/Math /usr/include/osg/Vec3f
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec4d /usr/include/osg/Vec4f
+fourwheeledrpos_gripper.o: /usr/include/osg/Quat /usr/include/osg/Matrixf
+fourwheeledrpos_gripper.o: ./fourwheeledrpos_gripper.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/oderobot.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/nimm4.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/oderobot.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/abstractrobot.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_adds.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/backcaller.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_map.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/position.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/sensormotorinfo.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/types.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/storeable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/odehandle.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_map.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/substance.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osghandle.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgforwarddecl.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/color.h
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec4
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/colorschema.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensor.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/types.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/stl_adds.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/matrix.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/storeable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/globaldata.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/odeconfig.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sound.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/pos.h
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec3
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/position.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/tmpobject.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/pose.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoption.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/globaldatabase.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/agent.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/wiredcontroller.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoptionengine.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/plotoption.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/abstractcontroller.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/inspectable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/randomgenerator.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/mac_drand48r.h
+fourwheeledrpos_gripper.o: /usr/include/limits.h /usr/include/limits.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackrobots.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/trackable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/configurablelist.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/backcallervector.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/sensormotorinfoable.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/selforg/include/selforg/sensormotorinfo.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/motor.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/tmpprimitive.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgprimitive.h
+fourwheeledrpos_gripper.o: /usr/include/osgDB/ReadFile /usr/include/osg/Node
+fourwheeledrpos_gripper.o: /usr/include/osg/StateSet
+fourwheeledrpos_gripper.o: /usr/include/osg/StateAttribute
+fourwheeledrpos_gripper.o: /usr/include/osg/StateAttributeCallback
+fourwheeledrpos_gripper.o: /usr/include/osg/Shader
+fourwheeledrpos_gripper.o: /usr/include/osg/GL2Extensions /usr/include/osg/GL
+fourwheeledrpos_gripper.o: /usr/include/GL/gl.h /usr/include/GL/glext.h
+fourwheeledrpos_gripper.o: /usr/include/inttypes.h /usr/include/stdint.h
+fourwheeledrpos_gripper.o: /usr/include/osg/buffered_value
+fourwheeledrpos_gripper.o: /usr/include/osg/DisplaySettings
+fourwheeledrpos_gripper.o: /usr/include/osg/Uniform /usr/include/osg/Array
+fourwheeledrpos_gripper.o: /usr/include/osg/MixinVector
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec2b /usr/include/osg/Vec3b
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec4b /usr/include/osg/Vec2s
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec3s /usr/include/osg/Vec4s
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec2i /usr/include/osg/Vec3i
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec4i /usr/include/osg/Vec2ub
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec3ub /usr/include/osg/Vec4ub
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec2us /usr/include/osg/Vec3us
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec4us /usr/include/osg/Vec2ui
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec3ui /usr/include/osg/Vec4ui
+fourwheeledrpos_gripper.o: /usr/include/osg/Vec2
+fourwheeledrpos_gripper.o: /usr/include/osg/BufferObject
+fourwheeledrpos_gripper.o: /usr/include/osg/FrameStamp
+fourwheeledrpos_gripper.o: /usr/include/osg/BoundingSphere
+fourwheeledrpos_gripper.o: /usr/include/osg/NodeCallback
+fourwheeledrpos_gripper.o: /usr/include/osg/Image
+fourwheeledrpos_gripper.o: /usr/include/osg/ArgumentParser
+fourwheeledrpos_gripper.o: /usr/include/osg/ApplicationUsage
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Export
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Registry
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/ReentrantMutex
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Thread
+fourwheeledrpos_gripper.o: /usr/include/osg/KdTree /usr/include/osg/Shape
+fourwheeledrpos_gripper.o: /usr/include/osg/Plane
+fourwheeledrpos_gripper.o: /usr/include/osg/BoundingBox
+fourwheeledrpos_gripper.o: /usr/include/osg/Geometry
+fourwheeledrpos_gripper.o: /usr/include/osg/Drawable
+fourwheeledrpos_gripper.o: /usr/include/osg/PrimitiveSet
+fourwheeledrpos_gripper.o: /usr/include/osg/RenderInfo /usr/include/osg/State
+fourwheeledrpos_gripper.o: /usr/include/osg/Observer /usr/include/osg/Timer
+fourwheeledrpos_gripper.o: /usr/include/osg/ShaderComposer
+fourwheeledrpos_gripper.o: /usr/include/osg/Program /usr/include/osg/Polytope
+fourwheeledrpos_gripper.o: /usr/include/osg/fast_back_stack
+fourwheeledrpos_gripper.o: /usr/include/osg/Viewport
+fourwheeledrpos_gripper.o: /usr/include/osg/GLBeginEndAdapter
+fourwheeledrpos_gripper.o: /usr/include/osg/ArrayDispatchers
+fourwheeledrpos_gripper.o: /usr/include/osg/GraphicsCostEstimator
+fourwheeledrpos_gripper.o: /usr/include/osg/View /usr/include/osg/Camera
+fourwheeledrpos_gripper.o: /usr/include/osg/Transform /usr/include/osg/Group
+fourwheeledrpos_gripper.o: /usr/include/osg/NodeVisitor
+fourwheeledrpos_gripper.o: /usr/include/osg/ColorMask
+fourwheeledrpos_gripper.o: /usr/include/osg/CullSettings
+fourwheeledrpos_gripper.o: /usr/include/osg/ClearNode
+fourwheeledrpos_gripper.o: /usr/include/osg/Texture
+fourwheeledrpos_gripper.o: /usr/include/osg/GraphicsContext
+fourwheeledrpos_gripper.o: /usr/include/osg/GraphicsThread
+fourwheeledrpos_gripper.o: /usr/include/osg/OperationThread
+fourwheeledrpos_gripper.o: /usr/include/osg/observer_ptr
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Barrier
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Condition
+fourwheeledrpos_gripper.o: /usr/include/OpenThreads/Block
+fourwheeledrpos_gripper.o: /usr/include/osg/Stats /usr/include/osg/Light
+fourwheeledrpos_gripper.o: /usr/include/osgDB/DynamicLibrary
+fourwheeledrpos_gripper.o: /usr/include/osgDB/ReaderWriter
+fourwheeledrpos_gripper.o: /usr/include/osgDB/AuthenticationMap
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Options
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Callbacks
+fourwheeledrpos_gripper.o: /usr/include/osgDB/FileCache
+fourwheeledrpos_gripper.o: /usr/include/osgDB/DatabaseRevisions
+fourwheeledrpos_gripper.o: /usr/include/osg/ObserverNodePath
+fourwheeledrpos_gripper.o: /usr/include/osgDB/DotOsgWrapper
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Input /usr/include/osgDB/Output
+fourwheeledrpos_gripper.o: /usr/include/osgDB/fstream
+fourwheeledrpos_gripper.o: /usr/include/osgDB/ObjectWrapper
+fourwheeledrpos_gripper.o: /usr/include/osgDB/Serializer
+fourwheeledrpos_gripper.o: /usr/include/osgDB/InputStream
+fourwheeledrpos_gripper.o: /usr/include/osg/Endian
+fourwheeledrpos_gripper.o: /usr/include/osgDB/StreamOperator
+fourwheeledrpos_gripper.o: /usr/include/osgDB/DataTypes
+fourwheeledrpos_gripper.o: /usr/include/osgDB/OutputStream
+fourwheeledrpos_gripper.o: /usr/include/osgDB/SharedStateManager
+fourwheeledrpos_gripper.o: /usr/include/osg/Geode
+fourwheeledrpos_gripper.o: /usr/include/osgDB/ImageProcessor
+fourwheeledrpos_gripper.o: /usr/include/osgText/Text
+fourwheeledrpos_gripper.o: /usr/include/osgText/TextBase
+fourwheeledrpos_gripper.o: /usr/include/osgText/String
+fourwheeledrpos_gripper.o: /usr/include/osgText/Export
+fourwheeledrpos_gripper.o: /usr/include/osgText/KerningType
+fourwheeledrpos_gripper.o: /usr/include/osgText/Font /usr/include/osg/TexEnv
+fourwheeledrpos_gripper.o: /usr/include/osgText/Glyph
+fourwheeledrpos_gripper.o: /usr/include/osg/Texture2D
+fourwheeledrpos_gripper.o: /usr/include/osgText/Style
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/raysensorbank.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/raysensor.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/primitive.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/osgprimitive.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/physicalsensor.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/joint.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/gripper.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/irsensor.h
+fourwheeledrpos_gripper.o: /home/dominik/workspace/pmanoonpong-lpzrobots-fork/ode_robots/include/ode_robots/primitive.h

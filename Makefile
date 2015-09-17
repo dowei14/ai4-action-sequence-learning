@@ -9,13 +9,6 @@
 # Date:       Oct 2009
 
 
-
-
- 
-
-
-
-
 EXEC = start
 # add files to compile in the conf file
 include Makefile.conf

@@ -46,7 +46,7 @@ namespace lpzrobots {
     RelativePositionSensor(double maxDistance, double exponent, short dimensions = X | Y | Z , bool local_coordinates = false);
     virtual ~RelativePositionSensor() {}
 
-    virtual void init(Primitive* own, Joint* joint = 0) override;
+    virtual void init(Primitive* own, Joint* joint) override;
 
     virtual int getSensorNumber() const;
 

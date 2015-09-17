@@ -23,6 +23,9 @@ class EmptyController : public AbstractController {
     double distance3;
     double mc[4];
 
+    //DSW
+    int counter;
+    double speed;
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
@@ -33,6 +36,10 @@ class EmptyController : public AbstractController {
       parameter.resize(2);
       //For students, Initialization -end//
 
+
+      //DSW
+      counter = 0;
+      speed = 1.0;
 
       //plot values on GUI, ./start -g 1
       addInspectableValue("parameter1", &parameter.at(0),"parameter1");
@@ -134,9 +141,19 @@ class EmptyController : public AbstractController {
       //    motors[2]= -1;
       //    motors[3]=  1;
 
+
+
+      //dsw
+      counter++;
+      if (counter < 300){
+	speed = 1.0;
+      } else {
+	speed = -1.0;
+      }
+
       //drive straight forward
       for (int i = 0; i < number_motors; i++){
-        motors[i]=1.0;
+        motors[i]=speed;
       }
 
     };
