@@ -33,7 +33,7 @@
 
 #include "relativepositionsensor.h"
 
-// DSW
+//dsw
 #include <ode_robots/gripper.h>
 
 using namespace osg;

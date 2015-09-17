@@ -140,12 +140,12 @@ namespace lpzrobots {
     RaySensorBank irSensorBank; // a collection of ir sensors
     Primitive* bumpertrans;
     Primitive* bumper;
-    
     // DSW
     Primitive* grippertrans;
     Primitive* grippertrans2;
     Primitive* gripperBar;
     Primitive* gripperBar2;
+//    SliderJoint* gripperJoint;
 		Gripper* gripper;
   };
 
