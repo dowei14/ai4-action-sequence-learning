@@ -33,3 +33,10 @@
 *.cpp~
 
 start
+
+*.sh~
+*.xml
+*.settings
+*.cfg
+*.depend
+.gitignore~
