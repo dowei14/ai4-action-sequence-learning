@@ -33,13 +33,13 @@
 #include <ode_robots/passivebox.h>
 
 // controller
-#include "emptycontroller.h"
+#include "aslcontroller.h"
 
 // fetch all the stuff of lpzrobots into scope
 using namespace lpzrobots;
 
 
-EmptyController* qcontroller;
+ASLController* qcontroller;
 
 
 // obstacles and spheres
@@ -153,7 +153,7 @@ public:
 
 		vehicle3->addGrippables(grippables);
 		
-		qcontroller = new EmptyController("1","1");
+		qcontroller = new ASLController("1","1");
 		global.configs.push_back(qcontroller);
 
 		// create pointer to one2onewiring
