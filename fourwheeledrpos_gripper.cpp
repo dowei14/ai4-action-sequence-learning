@@ -221,9 +221,12 @@ namespace lpzrobots {
       grippertrans2->init(odeHandle, 0, osgHandle);
 
 
-	GripperConf grippConf = Gripper::getDefaultConf();
-	gripper = new Gripper(grippConf);
-	gripper->attach(grippertrans2);
+			GripperConf grippConf = Gripper::getDefaultConf();
+			grippConf.gripDuration = 0.1;
+			grippConf.releaseDuration = 0.0;
+			grippConf.forbitLastPrimitive = false;
+			gripper = new Gripper(grippConf);
+			gripper->attach(grippertrans2);
 	
 
 	

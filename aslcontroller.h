@@ -5,6 +5,8 @@
 #include <selforg/abstractcontroller.h>
 #include <selforg/controller_misc.h>
 
+// DSW
+#include <fourwheeledrpos_gripper.h>
 
 /**
  * Action-Sequence-Learning Controller for 
@@ -12,7 +14,7 @@
  * The controller gets a number of input sensor values each timestep
  * and has to generate a number of output motor values.
  *
- *
+ * Dominik Steven Weickgenannt (dowei14@student.sdu.dk 2015/2016)
  */
 class ASLController : public AbstractController {
   public:
@@ -23,13 +25,17 @@ class ASLController : public AbstractController {
     double distance3;
     double mc[4];
 
-    //DSW
+    // DSW
     int counter;
     double speed;
+    lpzrobots::FourWheeledRPosGripper* vehicle;
+    std::vector<lpzrobots::Primitive*> grippables;
+    
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
-    ASLController(const std::string& name, const std::string& revision)
+    ASLController(const std::string& name, const std::string& revision, 
+    		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn)
     : AbstractController(name, revision){
 
       //For students, Initialization -begin//
@@ -37,9 +43,11 @@ class ASLController : public AbstractController {
       //For students, Initialization -end//
 
 
-      //DSW
+      // DSW
       counter = 0;
       speed = 1.0;
+      vehicle = vehicleIn;
+			grippables = grippablesIn;
 
       //plot values on GUI, ./start -g 1
       addInspectableValue("parameter1", &parameter.at(0),"parameter1");
@@ -68,15 +76,16 @@ class ASLController : public AbstractController {
       return number_motors;
     };
 
-    /** performs one step (includes learning).
-      Calculates motor commands from sensor inputs.
-      @param sensors sensors inputs scaled to [-1,1]
-      @param sensornumber length of the sensor array
-      @param motors motors outputs. MUST have enough space for motor values!
-      @param motornumber length of the provided motor array
-     */
+/*************************************************************************************************
+*** performs one step (includes learning).
+*** Calculates motor commands from sensor inputs.
+***   @param sensors sensors inputs scaled to [-1,1]
+***   @param sensornumber length of the sensor array
+***   @param motors motors outputs. MUST have enough space for motor values!
+***   @param motornumber length of the provided motor array
+*************************************************************************************************/
     virtual void step(const sensor* sensors, int sensornumber,
-        motor* motors, int motornumber){
+      motor* motors, int motornumber){
       assert(number_sensors == sensornumber);
       assert(number_motors == motornumber);
 
@@ -127,31 +136,22 @@ class ASLController : public AbstractController {
       parameter.at(0) = sensors[4];
       parameter.at(1) = sensors[5];
 
-      // Example open loop controller:
-
-      //    // turn right in place
-      //    motors[0]=  1;
-      //    motors[1]= -1;
-      //    motors[2]=  1;
-      //    motors[3]= -1;
-
-      //    // turn left in place
-      //    motors[0]= -1;
-      //    motors[1]=  1;
-      //    motors[2]= -1;
-      //    motors[3]=  1;
 
 
-
-      //dsw
+      // DSW forward for a bit then backforward for grasping test
       counter++;
-      if (counter < 300){
-	speed = 1.0;
+      if (counter < 420) {
+	      vehicle->addGrippables(grippables);
+				speed = 1.0;
+      } else if (counter < 700) {        
+				speed = 0.0;
+      } else if (counter < 750) {
+      	vehicle->removeAllGrippables();
+      } else if (counter < 1000){
+				speed = -1.0;
       } else {
-	speed = -1.0;
+      	speed = 1.0;
       }
-
-      //drive straight forward
       for (int i = 0; i < number_motors; i++){
         motors[i]=speed;
       }
