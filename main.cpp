@@ -59,7 +59,7 @@ public:
 	{
 
 		// set initial camera position
-		setCameraHomePos(Pos(0, 5, 5),  Pos(0, 0, 0));
+		setCameraHomePos(Pos(0, 20, 20),  Pos(0, 0, 0));
 
 		// initialization simulation parameters
 
@@ -114,15 +114,30 @@ public:
 ***			Set up goal boxes
 **************************************************************************************************/
 
-		PassiveBox* b1;
 		double length = 0.9;
 		double width = 0.9;
 		double height = 0.9;
+		PassiveBox* b1;
   	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
   	b1->setColor(Color(1,0,0));
   	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
-		grippables.push_back(b1->getMainPrimitive());
 		global.obstacles.push_back(b1);
+		
+		PassiveBox* b2;
+  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b2->setColor(Color(0,1,0));
+  	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
+		global.obstacles.push_back(b2);
+
+
+		PassiveBox* b3;
+  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b3->setColor(Color(0,0,1));
+  	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
+		global.obstacles.push_back(b3);
+
+
+		grippables.push_back(b1->getMainPrimitive());
 
 
 /**************************************************************************************************
