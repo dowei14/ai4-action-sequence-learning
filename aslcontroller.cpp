@@ -91,14 +91,14 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				speed = 1.0;
       } else if (counter < 700) {       
 				speed = 0.0;
-      } /*else if (counter < 750) {
+      } else if (counter < 1700) {
       	vehicle->removeAllGrippables();
-      } else if (counter < 1000){
+      } else if (counter < 2000){
 				speed = -1.0;
       } else {
       	speed = 1.0;
       }
-*/
+
       for (int i = 0; i < number_motors; i++){
         motors[i]=speed;
       }
