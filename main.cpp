@@ -48,49 +48,90 @@ std::vector<AbstractObstacle*> obst;
 
 
 // DSW
-std::vector<Primitive*> grippables;
+Primitives grippables;
+Primitives boxPrimitives;
 
 
 class ThisSim : public Simulation {
 public:
+
+	// generate 4 landmark spheres and 1 goal
+	void generate_spheres(GlobalData& global)
+	{
+		PassiveSphere* s1;
+		s1 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
+		s1->setPosition(osg::Vec3(16,16,2));
+		s1->setColor(Color(0,0,1));
+		obst.push_back(s1);
+		
+		PassiveSphere* s2;
+		s2 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
+		s2->setPosition(osg::Vec3(-16,-16,2));
+		s2->setColor(Color(0,0,1));
+		obst.push_back(s2);
+		
+		PassiveSphere* s3;
+		s3 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
+		s3->setPosition(osg::Vec3(-16,16,2));
+		s3->setColor(Color(0,0,1));
+		obst.push_back(s3);
+		
+		PassiveSphere* s4;
+		s4 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
+		s4->setPosition(osg::Vec3(16,-16,2));
+		s4->setColor(Color(0,0,1));
+		obst.push_back(s4);
+		
+		PassiveSphere* s5;
+		s5 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
+		s5->setPosition(osg::Vec3(-13,0,2));
+		s5->setColor(Color(0,1,0));
+		obst.push_back(s5);
+	}
+	
 	// generate 3 goal boxes return Primitives(vector of Primitive*) of boxes to add to grippables
-	Primitives generate_box(GlobalData& global)
+	void generate_boxes(GlobalData& global)
 	{
 		double length = 0.9;
 		double width = 0.9;
 		double height = 0.9;
 		PassiveBox* b1;
   	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b1->setColor(Color(1,0,0));
+  	b1->setColor(Color(0,1,0));
   	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
 		global.obstacles.push_back(b1);
 		
 		PassiveBox* b2;
   	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b2->setColor(Color(0,1,0));
+  	b2->setColor(Color(1,0,0));
   	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
 		global.obstacles.push_back(b2);
 
 
 		PassiveBox* b3;
   	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b3->setColor(Color(0,0,1));
+  	b3->setColor(Color(1,0,0));
   	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
-		global.obstacles.push_back(b3);
-	
-		Primitives boxPrimitives;
+		global.obstacles.push_back(b3);	
+		
 		boxPrimitives.push_back(b1->getMainPrimitive());
 		boxPrimitives.push_back(b2->getMainPrimitive());
 		boxPrimitives.push_back(b3->getMainPrimitive());
-		return boxPrimitives;
+		
+		// adding boxes to obstacle vector so it can be connected to sensors
+		obst.push_back(b1);
+		obst.push_back(b2);
+		obst.push_back(b3);
+		
 	}	
 	
+	// set up Playground
 	void setup_Playground(GlobalData& global)
 	{
 		// inner Platform
-		double length_pg = 0.0; //45, 32, 22
-		double width_pg = 10.0;//0.0;  //0.2
-		double height_pg = 1.0;//0.0; //0.5
+		double length_pg = 0.0;
+		double width_pg = 10.0;
+		double height_pg = 1.0;
 		
 		Playground* playground = new Playground(odeHandle, osgHandle.changeColor(Color(0.6,0.0,0.6)),
 				osg::Vec3(length_pg /*length*/, width_pg /*width*/, height_pg/*height*/), /*factorxy = 1*/1, /*createGround=true*/true /*false*/);
@@ -99,9 +140,9 @@ public:
 		global.obstacles.push_back(playground);
 
 		// DSW: outer_pg = outter platform
-  	double length_outer_pg = 22.0; //45, 32, 22
-		double width_outer_pg = 5.0;//0.0;  //0.2
-		double height_outer_pg = 1.0;//0.0; //0.5
+  	double length_outer_pg = 22.0;
+		double width_outer_pg = 5.0;
+		double height_outer_pg = 1.0;
 
 		Playground* outer_playground = new Playground(odeHandle, osgHandle.changeColor(Color(0.6,0.0,0.6)),
 					osg::Vec3(length_outer_pg /*length*/, width_outer_pg /*width*/, height_outer_pg/*height*/), /*factorxy = 1*/1, /*createGround=true*/true /*false*/);
@@ -109,9 +150,9 @@ public:
 		global.obstacles.push_back(outer_playground);
 
   	// DSW: outer_pg2 = walls
-  	double length_outer_pg2 = 32.0; //45, 32, 22
-		double width_outer_pg2 = 1.0;//0.0;  //0.2
-		double height_outer_pg2 = 2.0;//0.0; //0.5
+  	double length_outer_pg2 = 32.0;
+		double width_outer_pg2 = 1.0;
+		double height_outer_pg2 = 2.0;
 
 		Playground* outer_playground2 = new Playground(odeHandle, osgHandle.changeColor(Color(0.6,0.0,0.6)),
 					osg::Vec3(length_outer_pg2 /*length*/, width_outer_pg2 /*width*/, height_outer_pg2/*height*/), /*factorxy = 1*/1, /*createGround=true*/true /*false*/);
@@ -124,7 +165,7 @@ public:
 	{
 
 		// set initial camera position
-		setCameraHomePos(Pos(0, 20, 20),  Pos(0, 0, 0));
+		setCameraHomePos(Pos(0, 5, 20),  Pos(0, 0, 0));
 
 		// initialization simulation parameters
 
@@ -143,18 +184,21 @@ public:
 /**************************************************************************************************
 ***			Set up Environment
 **************************************************************************************************/
-		//5) - set Playground as boundary:
-    
+  
 		setup_Playground(global);
 	
 /**************************************************************************************************
-***			Set up goal boxes
-**************************************************************************************************/
+***			Set up 4 landmark and 1 goal spheres
+**************************************************************************************************/		
 
+		generate_spheres(global);
 
-		Primitives boxPrimitives = generate_box(global);
+/**************************************************************************************************
+***			Set up 3 pushable boxes and add the first one as graspable
+************************************************************************************************/
+
+		generate_boxes(global);
 		grippables.push_back(boxPrimitives[0]);
-
 
 /**************************************************************************************************
 ***			Set up robot and controller

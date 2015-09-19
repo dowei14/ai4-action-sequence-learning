@@ -316,11 +316,11 @@ namespace lpzrobots {
 		return gripper;
 	}
 
-	void FourWheeledRPosGripper::addGrippables(std::vector<Primitive*> objects){
+	void FourWheeledRPosGripper::addGrippables(Primitives objects){
 		gripper->addGrippables(objects);
 	}
 
-	void FourWheeledRPosGripper::removeGrippables(std::vector<Primitive*> objects){
+	void FourWheeledRPosGripper::removeGrippables(Primitives objects){
 		gripper->removeGrippables(objects);
 	}
 	

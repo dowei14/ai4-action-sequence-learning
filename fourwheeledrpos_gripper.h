@@ -123,8 +123,8 @@ namespace lpzrobots {
 
 		// returns pointer to gripper
 		virtual Gripper* getGripper();
-		virtual void addGrippables(std::vector<Primitive*> objects);
-		virtual void removeGrippables(std::vector<Primitive*> objects);
+		virtual void addGrippables(Primitives objects);
+		virtual void removeGrippables(Primitives objects);
 		virtual void removeAllGrippables();
     
   protected:
