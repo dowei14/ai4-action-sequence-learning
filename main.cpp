@@ -42,9 +42,9 @@ using namespace lpzrobots;
 ASLController* qcontroller;
 
 
-// obstacles and spheres
-int number_spheres = 0; // set number of spheres for relative sensors
-std::vector<AbstractObstacle*> obst;
+// relative_sensors
+int number_relative_sensors = 8; // set number of spheres for relative sensors
+std::vector<AbstractObstacle*> relative_sensor_obst;
 
 
 // DSW
@@ -62,31 +62,31 @@ public:
 		s1 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
 		s1->setPosition(osg::Vec3(16,16,2));
 		s1->setColor(Color(0,0,1));
-		obst.push_back(s1);
+		relative_sensor_obst.push_back(s1);
 		
 		PassiveSphere* s2;
 		s2 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
 		s2->setPosition(osg::Vec3(-16,-16,2));
 		s2->setColor(Color(0,0,1));
-		obst.push_back(s2);
+		relative_sensor_obst.push_back(s2);
 		
 		PassiveSphere* s3;
 		s3 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
 		s3->setPosition(osg::Vec3(-16,16,2));
 		s3->setColor(Color(0,0,1));
-		obst.push_back(s3);
+		relative_sensor_obst.push_back(s3);
 		
 		PassiveSphere* s4;
 		s4 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
 		s4->setPosition(osg::Vec3(16,-16,2));
 		s4->setColor(Color(0,0,1));
-		obst.push_back(s4);
+		relative_sensor_obst.push_back(s4);
 		
 		PassiveSphere* s5;
 		s5 = new PassiveSphere(odeHandle, osgHandle, 0.5, 0.0);
 		s5->setPosition(osg::Vec3(-13,0,2));
 		s5->setColor(Color(0,1,0));
-		obst.push_back(s5);
+		relative_sensor_obst.push_back(s5);
 	}
 	
 	// generate 3 goal boxes return Primitives(vector of Primitive*) of boxes to add to grippables
@@ -119,9 +119,9 @@ public:
 		boxPrimitives.push_back(b3->getMainPrimitive());
 		
 		// adding boxes to obstacle vector so it can be connected to sensors
-		obst.push_back(b1);
-		obst.push_back(b2);
-		obst.push_back(b3);
+		relative_sensor_obst.push_back(b1);
+		relative_sensor_obst.push_back(b2);
+		relative_sensor_obst.push_back(b3);
 		
 	}	
 	
@@ -170,7 +170,9 @@ public:
 		// initialization simulation parameters
 
 		//1) - set noise to 0.1
-		global.odeConfig.noise= 0.02;//0.05;
+		global.odeConfig.noise= 0.0;//0.02;//0.05;
+//DSW removed noise for sensor testing
+
 
 		//2) - set controlinterval -> default = 1
 		global.odeConfig.setParam("controlinterval", 1);/*update frequency of the simulation ~> amos = 20*/
@@ -206,14 +208,12 @@ public:
 
 		//0)
 
-		//qcontroller->setReset(1);
-
 		//1) Activate IR sensors
-	  	FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
+  	FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
 
 		///2) relative sensors
-		for (int i=0; i < number_spheres; i++){
-			fconf.rpos_sensor_references.push_back(obst.at(i)->getMainPrimitive());
+		for (int i=0; i < number_relative_sensors; i++){
+			fconf.rpos_sensor_references.push_back(relative_sensor_obst.at(i)->getMainPrimitive());
 		}
 		FourWheeledRPosGripper* vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
 
