@@ -47,10 +47,9 @@ namespace lpzrobots {
   {
     length=conf.size/2.0; // length of body
     wheelsubstance=conf.wheelSubstance;
+
     //added:relative position sensors
-    //std::cout << "rpos sensing check reached, for "<< conf.rpos_sensor_references.size() << "sensors \n";
     if (conf.rpos_sensor_references.size()>0) {
-      //std::cout << "rpos sensing active with "<< conf.rpos_sensor_references.size() << " sensors \n";
       // Relative position sensor
       FOREACHIa(conf.rpos_sensor_references, ref, i){
         auto rpos_sens_tmp = make_shared<RelativePositionSensor>(
@@ -64,15 +63,8 @@ namespace lpzrobots {
         rpos_sens_tmp->setReference(*ref);
         rpos_sens_tmp->setBaseName("Pos Target " + itos(i) + "-");
         addSensor(rpos_sens_tmp);
-        //        rpos_sensor.push_back(rpos_sens_tmp);
-        //        sensorno += rpos_sens_tmp.getSensorNumber(); // increase sensornumber of robot
-        //std::cout << "sensor added, now "<< sensorno << " sensors \n";
-       // sensorno+=3;
-
       }
       }
-
-   //outfilePos.open("position.txt");
   };
 
 
@@ -81,15 +73,7 @@ namespace lpzrobots {
   }
 
   Position FourWheeledRPosGripper::getPosition(){
-
-	/* Position pos_robot;
-
-	 pos_robot = Nimm4::getPosition();
-
-	 outfilePos<<pos_robot.x<<" "<<pos_robot.y<<" "<<pos.robot.z<<endl;*/
-
 	  return Nimm4::getPosition();
-
   }
 
 
@@ -101,20 +85,14 @@ namespace lpzrobots {
 
     if(conf.twoWheelMode){
       assert(Nimm4::getSensorNumberIntern() == 4);
-//      std::cout << irSensorBank.size() << " ir Sensors, "<< conf.rpos_sensor_references.size() << " position sensors \n";
-//      std::cout << 2 + irSensorBank.size() + conf.rpos_sensor_references.size() <<" Sensors total\n";
       return 2 + irSensorBank.size();
     }else{
-//      std::cout << irSensorBank.size() << " ir Sensors, "<< conf.rpos_sensor_references.size() << " position sensors \n";
-//      std::cout << 4 << " Wheel speed sensors \n";
-//      std::cout << 4 + irSensorBank.size() + conf.rpos_sensor_references.size() <<" Sensors total \n";
       return 4 + irSensorBank.size();
     }
  }
 
   int FourWheeledRPosGripper::getSensorsIntern(sensor* sensors, int sensornumber){
     int len = 0;
-   //if(sensornumber!= sensorno ){std::cout<<"warning: sensor number mismatch \n";}
     if(conf.twoWheelMode){
       sensor nimm4s[4];
       Nimm4::getSensors(nimm4s,4);
@@ -123,32 +101,12 @@ namespace lpzrobots {
     } else {
       len = Nimm4::getSensorsIntern(sensors,4);
     }
-
     // ask sensorbank for sensor values (from infrared sensors)
     //  sensor+len is the starting point in the sensors array
     if (conf.irFront || conf.irSide || conf.irBack){
       len += irSensorBank.get(sensors+len, sensornumber-len);
     }
 
-    // //added
-    // if (conf.relPosSensor) {
-    //   //std::cout << "Relative Sense enabled\n ";
-    //   for (std::vector<RelativePositionSensor>::iterator it = rpos_sensor.begin(); it<rpos_sensor.end();it++){
-    //     //std::cout << "New Sensor chosen \n";
-    //     std::list<sensor> rps_val = it->getList();
-    //         for (int i=0; i<it->getSensorNumber(); i++){
-    //           sensors[len]=rps_val.back();  // z is taken as first value,
-    //           // since it is x in local coordinates (see above)
-    //           // y is taken as 2nd sensorvalue
-    //           // x is taken as 3rd sensorvalue (is z in local coordinates)
-    //           rps_val.pop_back();
-    //           len++;
-    //           //std::cout << len << "  Relative Sensor found \n";
-    //         }
-    //   }
-    // }
-
-    //std::cout << len << " sensors found \n";
     return len;
   };
 
@@ -222,7 +180,7 @@ namespace lpzrobots {
 
 
 			GripperConf grippConf = Gripper::getDefaultConf();
-			grippConf.gripDuration = 0.1;
+			grippConf.gripDuration = 1.0;
 			grippConf.releaseDuration = 0.0;
 			grippConf.forbitLastPrimitive = false;
 			gripper = new Gripper(grippConf);
@@ -231,7 +189,6 @@ namespace lpzrobots {
 
 	
     }
-
 
 
     /* initialize sensorbank (for use of infrared sensors)
@@ -248,12 +205,13 @@ namespace lpzrobots {
     irSensorBank.init(0);
 
     if (conf.irFront){ // add front left and front right infrared sensor to sensorbank if required
-      for(int i=-1; i<2; i+=2){
-	IRSensor* sensor = new IRSensor();
-	irSensorBank.registerSensor(sensor, objects[0],
-				    Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
-				    Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
-				    conf.irRangeFront, RaySensor::drawAll);
+      for(int i=-3; i<4; i+=2){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
+				IRSensor* sensor = new IRSensor();
+				irSensorBank.registerSensor(sensor, objects[0],
+ 				  Matrix::rotate(-M_PI/10, Vec3(0,1,0)) * // pointing downwards
+				  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
+				  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
+				  conf.irRangeFront, RaySensor::drawAll);
       }
     }
     if (conf.irSide){ // add right infrared sensors to sensorbank if required
@@ -273,34 +231,28 @@ namespace lpzrobots {
 
     if (conf.irBack){ // add rear right and rear left infrared sensor to sensorbank if required
       for(int i=-1; i<2; i+=2){
-	IRSensor* sensor = new IRSensor();
-	irSensorBank.registerSensor(sensor, objects[0],
-				    Matrix::rotate(-i*M_PI/10, Vec3(1,0,0)) *
-				    Matrix::rotate(i*M_PI, Vec3(0,1,0)) *
-				    Matrix::translate(0,i*width/10,-(length/2 + width/2 - width/60) ),
-				    conf.irRangeBack, RaySensor::drawAll);
+				IRSensor* sensor = new IRSensor();
+				irSensorBank.registerSensor(sensor, objects[0],
+									Matrix::rotate(-i*M_PI/10, Vec3(1,0,0)) *
+									Matrix::rotate(i*M_PI, Vec3(0,1,0)) *
+									Matrix::translate(0,i*width/10,-(length/2 + width/2 - width/60) ),
+									conf.irRangeBack, RaySensor::drawAll);
       }
     }
     if (conf.irSide){ // add left infrared sensors to sensorbank if required
-	IRSensor* sensor = new IRSensor();
-	irSensorBank.registerSensor(sensor, objects[0],
-				    //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-				    Matrix::rotate(-M_PI/4, Vec3(1,0,0)) *
-				    Matrix::translate(0,width/2, 0),
-				    conf.irRangeSide, RaySensor::drawAll);
-   sensor = new IRSensor();
-  irSensorBank.registerSensor(sensor, objects[0],
-            //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-            Matrix::rotate(-M_PI/6, Vec3(1,0,0)) *
-            Matrix::translate(-width/6,width/2, 0),
-            conf.irRangeSide, RaySensor::drawAll);
+			IRSensor* sensor = new IRSensor();
+			irSensorBank.registerSensor(sensor, objects[0],
+								//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+								Matrix::rotate(-M_PI/4, Vec3(1,0,0)) *
+								Matrix::translate(0,width/2, 0),
+								conf.irRangeSide, RaySensor::drawAll);
+			 sensor = new IRSensor();
+			irSensorBank.registerSensor(sensor, objects[0],
+				        //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+				        Matrix::rotate(-M_PI/6, Vec3(1,0,0)) *
+				        Matrix::translate(-width/6,width/2, 0),
+				        conf.irRangeSide, RaySensor::drawAll);
     }
-    // // Added: Relative position sensor
-    // if (conf.relPosSensor) {
-    //   for (std::vector<RelativePositionSensor>::iterator it = rpos_sensor.begin(); it<rpos_sensor.end();it++){
-    //     it->init(objects[0]); // connect sensor to main body
-    //   }
-    // }
   };
 
 
@@ -312,10 +264,6 @@ namespace lpzrobots {
   }
 
 	// DSW
-	Gripper* FourWheeledRPosGripper::getGripper(){
-		return gripper;
-	}
-
 	void FourWheeledRPosGripper::addGrippables(Primitives objects){
 		gripper->addGrippables(objects);
 	}

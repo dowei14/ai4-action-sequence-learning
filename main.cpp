@@ -41,11 +41,8 @@ using namespace lpzrobots;
 
 ASLController* qcontroller;
 
-
 // relative_sensors
-int number_relative_sensors = 8; // set number of spheres for relative sensors
 std::vector<AbstractObstacle*> relative_sensor_obst;
-
 
 // DSW
 Primitives grippables;
@@ -107,7 +104,6 @@ public:
   	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
 		global.obstacles.push_back(b2);
 
-
 		PassiveBox* b3;
   	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
   	b3->setColor(Color(1,0,0));
@@ -165,13 +161,13 @@ public:
 	{
 
 		// set initial camera position
-		setCameraHomePos(Pos(0, 5, 20),  Pos(0, 0, 0));
+//		setCameraHomePos(Pos(0, 40, 10),  Pos(0, 0, 0)); // viewing full screne from side
+		setCameraHomePos(Pos(0, 5, 5),  Pos(0, 0, 0));
 
 		// initialization simulation parameters
 
 		//1) - set noise to 0.1
-		global.odeConfig.noise= 0.0;//0.02;//0.05;
-//DSW removed noise for sensor testing
+		global.odeConfig.noise= 0.02;//0.05;
 
 
 		//2) - set controlinterval -> default = 1
@@ -212,7 +208,7 @@ public:
   	FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
 
 		///2) relative sensors
-		for (int i=0; i < number_relative_sensors; i++){
+		for (unsigned int i=0; i < relative_sensor_obst.size(); i++){
 			fconf.rpos_sensor_references.push_back(relative_sensor_obst.at(i)->getMainPrimitive());
 		}
 		FourWheeledRPosGripper* vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);

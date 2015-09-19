@@ -86,10 +86,10 @@ namespace lpzrobots {
       conf.speed        = 15;
       conf.sphereWheels = true;
       conf.twoWheelMode = false;
-      conf.useBumper    = true;
+      conf.useBumper    = false;
       conf.irFront      = true;
-      conf.irBack       = true;
-      conf.irSide       = true;
+      conf.irBack       = false;
+      conf.irSide       = false;
       conf.irRangeFront = 3;
       conf.irRangeSide  = 2;
       conf.irRangeBack  = 2;
@@ -122,7 +122,6 @@ namespace lpzrobots {
     virtual Joint* getJoint(int i);
 
 		// returns pointer to gripper
-		virtual Gripper* getGripper();
 		virtual void addGrippables(Primitives objects);
 		virtual void removeGrippables(Primitives objects);
 		virtual void removeAllGrippables();
@@ -137,7 +136,6 @@ namespace lpzrobots {
      */
     virtual void destroy();
     //added
-    //    std::vector<RelativePositionSensor> rpos_sensor;
     FourWheeledConfGripper conf;
     RaySensorBank irSensorBank; // a collection of ir sensors
     Primitive* bumpertrans;
@@ -148,6 +146,7 @@ namespace lpzrobots {
     Primitive* grippertrans2;
     Primitive* gripperBar;
     Primitive* gripperBar2;
+    
 		Gripper* gripper;
   };
 
