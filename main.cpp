@@ -93,8 +93,9 @@ public:
 		double width = 0.9;
 		double height = 0.9;
 		PassiveBox* b1;
-  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),0.1);
   	b1->setColor(Color(0,1,0));
+  	b1->setSubstance(Substance(5.0,10.0,99.0,1.0));
   	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
 		global.obstacles.push_back(b1);
 		

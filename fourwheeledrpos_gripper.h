@@ -142,10 +142,18 @@ namespace lpzrobots {
     Primitive* bumper;
     
     // DSW
-    Primitive* grippertrans;
-    Primitive* grippertrans2;
-    Primitive* gripperBar;
-    Primitive* gripperBar2;
+    Primitive* gripperArm1;
+    Primitive* gripperArmTrans1;
+    Primitive* gripperArm2;
+    Primitive* gripperArmTrans2;
+    Primitive* gripperArm3;
+    Primitive* gripperArmTrans3;
+    Primitive* gripperArm4;
+    Primitive* gripperArmTrans4;
+    Primitive* gripperArm5;
+    Primitive* gripperArmTrans5;
+    Primitive* gripperArmGrip;
+    Primitive* gripperArmTransGrip;
     
 		Gripper* gripper;
   };

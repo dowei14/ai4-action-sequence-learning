@@ -135,10 +135,14 @@ namespace lpzrobots {
     Nimm4::update();
     if(conf.useBumper)
       bumpertrans->update();
-    // DSW
+    // DSW update gripper 
     if(conf.useGripper) {
-      grippertrans->update();
-      grippertrans2->update();
+    	gripperArmTrans1->update();
+			gripperArmTrans2->update();
+			gripperArmTrans3->update();
+			gripperArmTrans4->update();
+			gripperArmTrans5->update();
+			gripperArmTransGrip->update();
     }
     // update sensorbank with infrared sensors
     irSensorBank.update();
@@ -162,32 +166,51 @@ namespace lpzrobots {
       bumpertrans = new Transform(objects[0], bumper,
                                   Matrix::translate(width*0.6-radius, 0, 0));
       bumpertrans->init(odeHandle, 0, osgHandle);
-      //delete bumpertrans;
     }
 
-//  dsw
+		// DSW Build gripper
     if(conf.useGripper){
-      gripperBar = new Box(0.1 , 0.1, length+0.7*width);
-      gripperBar->setTexture("Images/tire_full.rgb");
-      grippertrans = new Transform(objects[0], gripperBar,
-                                  Matrix::translate(width*0.6-radius + 0.2, - 0.2, 0.5));
-      grippertrans->init(odeHandle, 0, osgHandle);
-      gripperBar2 = new Box(0.1 , 0.1, length+0.7*width);
-      gripperBar2->setTexture("Images/tire_full.rgb");
-      grippertrans2 = new Transform(objects[0], gripperBar2,
-                                  Matrix::translate(width*0.6-radius + 0.2, 0.2, 0.5));
-      grippertrans2->init(odeHandle, 0, osgHandle);
 
+			gripperArm1 = new Box(0.1 , 0.3, 0.5);
+			gripperArm1->setTexture("Images/wood.rgb");		
+			gripperArmTrans1 = new Transform(objects[0],gripperArm1, Matrix::translate(0,0,0.25) * Matrix::rotate(M_PI/4,Vec3(0,1,0)));
+			gripperArmTrans1->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
+			
+			gripperArm2 = new Box(0.1 , 0.445, 0.5);
+			gripperArm2->setTexture("Images/wood.rgb");		
+			gripperArm2->setSubstance(Substance(5.0,10.0,99.0,1.0));
+			gripperArmTrans2 = new Transform(objects[0],gripperArm2, Matrix::translate(0.35,-0.225,0.55));
+			gripperArmTrans2->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
+			
+			gripperArm3 = new Box(0.1 , 0.445, 0.5);
+			gripperArm3->setTexture("Images/wood.rgb");
+			gripperArm3->setSubstance(Substance(5.0,10.0,99.0,1.0));		
+			gripperArmTrans3 = new Transform(objects[0],gripperArm3, Matrix::translate(0.35,0.225,0.55));
+			gripperArmTrans3->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
+			
+			gripperArm4 = new Box(0.1 , 0.1, 0.6);
+			gripperArm4->setTexture("Images/wood.rgb");		
+			gripperArmTrans4 = new Transform(objects[0],gripperArm4, Matrix::translate(0.35,0.23,0.9) * Matrix::rotate(-M_PI/10,Vec3(1,0,0)));
+			gripperArmTrans4->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
+			
+			gripperArm5 = new Box(0.1 , 0.1, 0.6);
+			gripperArm5->setTexture("Images/wood.rgb");		
+			gripperArmTrans5 = new Transform(objects[0],gripperArm5, Matrix::translate(0.35,-0.23,0.9) * Matrix::rotate(M_PI/10,Vec3(1,0,0)));
+			gripperArmTrans5->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
+			
+			gripperArmGrip = new Box(0.1 , 0.01, 0.5);
+			gripperArmGrip->setTexture("Images/wood.rgb");		
+			gripperArmTransGrip = new Transform(objects[0],gripperArmGrip, Matrix::translate(0.35,0,0.55));
+			gripperArmTransGrip->init(odeHandle, 0, osgHandle.changeColor(Color(0.8,0.8,0.8)));
 
+			// create gripper material and attach it to primitive
 			GripperConf grippConf = Gripper::getDefaultConf();
 			grippConf.gripDuration = 1.0;
 			grippConf.releaseDuration = 0.0;
 			grippConf.forbitLastPrimitive = false;
 			gripper = new Gripper(grippConf);
-			gripper->attach(grippertrans2);
-	
-
-	
+			gripper->attach(gripperArmTransGrip);
+		
     }
 
 
@@ -204,11 +227,12 @@ namespace lpzrobots {
     irSensorBank.setInitData(odeHandle, osgHandle, TRANSM(0,0,0));
     irSensorBank.init(0);
 
+		// DSW 4 front laser sensors pointing downwards to detect the gap
     if (conf.irFront){ // add front left and front right infrared sensor to sensorbank if required
       for(int i=-3; i<4; i+=2){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
 				IRSensor* sensor = new IRSensor();
 				irSensorBank.registerSensor(sensor, objects[0],
- 				  Matrix::rotate(-M_PI/10, Vec3(0,1,0)) * // pointing downwards
+ 				  Matrix::rotate(-M_PI/10, Vec3(0,1,0)) * // DSW pointing downwards
 				  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
 				  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
 				  conf.irRangeFront, RaySensor::drawAll);
