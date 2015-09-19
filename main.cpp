@@ -53,33 +53,41 @@ std::vector<Primitive*> grippables;
 
 class ThisSim : public Simulation {
 public:
-
-	// starting function (executed once at the beginning of the simulation loop)
-	void start(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
+	// generate 3 goal boxes return Primitives(vector of Primitive*) of boxes to add to grippables
+	Primitives generate_box(GlobalData& global)
 	{
+		double length = 0.9;
+		double width = 0.9;
+		double height = 0.9;
+		PassiveBox* b1;
+  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b1->setColor(Color(1,0,0));
+  	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
+		global.obstacles.push_back(b1);
+		
+		PassiveBox* b2;
+  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b2->setColor(Color(0,1,0));
+  	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
+		global.obstacles.push_back(b2);
 
-		// set initial camera position
-		setCameraHomePos(Pos(0, 20, 20),  Pos(0, 0, 0));
 
-		// initialization simulation parameters
-
-		//1) - set noise to 0.1
-		global.odeConfig.noise= 0.02;//0.05;
-
-		//2) - set controlinterval -> default = 1
-		global.odeConfig.setParam("controlinterval", 1);/*update frequency of the simulation ~> amos = 20*/
-		//3) - set simulation setp size
-		global.odeConfig.setParam("simstepsize", 0.01); /*stepsize of the physical simulation (in seconds)*/
-		//Update frequency of simulation = 1*0.01 = 0.01 s ; 100 Hz
-
-		//4) - set gravity if not set then it uses -9.81 =earth gravity
-		//global.odeConfig.setParam("gravity", -9.81);
-
-/**************************************************************************************************
-***			Set up Environment
-**************************************************************************************************/
-		//5) - set Playground as boundary:
-    // inner Platform
+		PassiveBox* b3;
+  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b3->setColor(Color(0,0,1));
+  	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
+		global.obstacles.push_back(b3);
+	
+		Primitives boxPrimitives;
+		boxPrimitives.push_back(b1->getMainPrimitive());
+		boxPrimitives.push_back(b2->getMainPrimitive());
+		boxPrimitives.push_back(b3->getMainPrimitive());
+		return boxPrimitives;
+	}	
+	
+	void setup_Playground(GlobalData& global)
+	{
+		// inner Platform
 		double length_pg = 0.0; //45, 32, 22
 		double width_pg = 10.0;//0.0;  //0.2
 		double height_pg = 1.0;//0.0; //0.5
@@ -109,35 +117,43 @@ public:
 					osg::Vec3(length_outer_pg2 /*length*/, width_outer_pg2 /*width*/, height_outer_pg2/*height*/), /*factorxy = 1*/1, /*createGround=true*/true /*false*/);
 		outer_playground2->setPosition(osg::Vec3(0,0,0.0));
   	global.obstacles.push_back(outer_playground2);
+	}
 
+	// starting function (executed once at the beginning of the simulation loop)
+	void start(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
+	{
+
+		// set initial camera position
+		setCameraHomePos(Pos(0, 20, 20),  Pos(0, 0, 0));
+
+		// initialization simulation parameters
+
+		//1) - set noise to 0.1
+		global.odeConfig.noise= 0.02;//0.05;
+
+		//2) - set controlinterval -> default = 1
+		global.odeConfig.setParam("controlinterval", 1);/*update frequency of the simulation ~> amos = 20*/
+		//3) - set simulation setp size
+		global.odeConfig.setParam("simstepsize", 0.01); /*stepsize of the physical simulation (in seconds)*/
+		//Update frequency of simulation = 1*0.01 = 0.01 s ; 100 Hz
+
+		//4) - set gravity if not set then it uses -9.81 =earth gravity
+		//global.odeConfig.setParam("gravity", -9.81);
+
+/**************************************************************************************************
+***			Set up Environment
+**************************************************************************************************/
+		//5) - set Playground as boundary:
+    
+		setup_Playground(global);
+	
 /**************************************************************************************************
 ***			Set up goal boxes
 **************************************************************************************************/
 
-		double length = 0.9;
-		double width = 0.9;
-		double height = 0.9;
-		PassiveBox* b1;
-  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b1->setColor(Color(1,0,0));
-  	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
-		global.obstacles.push_back(b1);
-		
-		PassiveBox* b2;
-  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b2->setColor(Color(0,1,0));
-  	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
-		global.obstacles.push_back(b2);
 
-
-		PassiveBox* b3;
-  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
-  	b3->setColor(Color(0,0,1));
-  	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
-		global.obstacles.push_back(b3);
-
-
-		grippables.push_back(b1->getMainPrimitive());
+		Primitives boxPrimitives = generate_box(global);
+		grippables.push_back(boxPrimitives[0]);
 
 
 /**************************************************************************************************
