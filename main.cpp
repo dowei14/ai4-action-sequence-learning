@@ -161,49 +161,47 @@ public:
 	void start(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
 	{
 
-		// set initial camera position
-//		setCameraHomePos(Pos(0, 40, 10),  Pos(0, 0, 0)); // viewing full screne from side
+		/**************************************************************************************************
+		***			Camera Position
+		**************************************************************************************************/
+		//setCameraHomePos(Pos(0, 40, 10),  Pos(0, 0, 0)); // viewing full scene from side
 		setCameraHomePos(Pos(0, 5, 5),  Pos(0, 0, 0));
 
-		// initialization simulation parameters
-
+		/**************************************************************************************************
+		***			Simulation Parameters
+		**************************************************************************************************/
 		//1) - set noise to 0.1
 		global.odeConfig.noise= 0.0;//0.02;//0.05;
-
-
 		//2) - set controlinterval -> default = 1
 		global.odeConfig.setParam("controlinterval", 1);/*update frequency of the simulation ~> amos = 20*/
 		//3) - set simulation setp size
 		global.odeConfig.setParam("simstepsize", 0.01); /*stepsize of the physical simulation (in seconds)*/
 		//Update frequency of simulation = 1*0.01 = 0.01 s ; 100 Hz
-
 		//4) - set gravity if not set then it uses -9.81 =earth gravity
 		//global.odeConfig.setParam("gravity", -9.81);
 
-/**************************************************************************************************
-***			Set up Environment
-**************************************************************************************************/
-  
+		/**************************************************************************************************
+		***			Set up Environment
+		**************************************************************************************************/
+		
 		setup_Playground(global);
 	
-/**************************************************************************************************
-***			Set up 4 landmark and 1 goal spheres
-**************************************************************************************************/		
+		/**************************************************************************************************
+		***			Set up 4 landmark and 1 goal spheres
+		**************************************************************************************************/		
 
 		generate_spheres(global);
 
-/**************************************************************************************************
-***			Set up 3 pushable boxes and add the first one as graspable
-************************************************************************************************/
+		/**************************************************************************************************
+		***			Set up 3 pushable boxes and add the first one as graspable
+		************************************************************************************************/
 
 		generate_boxes(global);
 		grippables.push_back(boxPrimitives[0]);
 
-/**************************************************************************************************
-***			Set up robot and controller
-**************************************************************************************************/
-
-		//0)
+		/**************************************************************************************************
+		***			Set up robot and controller
+		**************************************************************************************************/
 
 		//1) Activate IR sensors
   	FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
@@ -215,8 +213,7 @@ public:
 		FourWheeledRPosGripper* vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
 
 		/****Initial position of Nimm4******/
-    // DSW
-    Pos pos(0.0/*, +x = to left, -x = to right*/,0.0/*y*/,1.0/*z*/);
+    Pos pos(0.0 , 0.0 , 1.0);
     //setting position and orientation
     vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 		
@@ -233,10 +230,6 @@ public:
 		agent->init(qcontroller, vehicle, wiring);///////////// Initial controller!!!
 		global.agents.push_back(agent);
 
-/**************************************************************************************************
-***			Testing stuff
-**************************************************************************************************/
-		
 
 	}
 

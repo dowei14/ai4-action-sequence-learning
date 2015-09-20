@@ -32,13 +32,15 @@ class ASLController : public AbstractController {
 
 
     // DSW
-    int counter;
-    double speed;
-    double left,right;
     lpzrobots::FourWheeledRPosGripper* vehicle;
     std::vector<lpzrobots::Primitive*> grippables;
     double distances [number_relative_sensors];
 		double angles [number_relative_sensors];
+
+		// DSW temp stuff for testing
+    int counter;
+    double speed;
+    double left,right;
     
     //Define global parameters-end//
 
@@ -72,8 +74,11 @@ class ASLController : public AbstractController {
 		// perform one step without learning
     virtual void stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors);
 
+
+		// DSW
 		virtual void calculateDistanceToGoals(const sensor* x_);
 		virtual void calculateAnglePositionFromSensors(const sensor* x_);
+
     /********* STORABLE INTERFACE ******/
     /// @see Storable
     virtual bool store(FILE* f) const {

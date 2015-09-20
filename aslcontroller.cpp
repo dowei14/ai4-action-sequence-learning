@@ -15,11 +15,13 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn)
 	: AbstractController(name, revision){
 
-  // DSW
-  counter = 0;
-  speed = 1.0;
+	// DSW
   vehicle = vehicleIn;
 	grippables = grippablesIn;
+
+  // DSW temp things
+  counter = 0;
+  speed = 1.0;
 
 	// things for plotting
   parameter.resize(16);
@@ -82,14 +84,14 @@ void ASLController::step(const sensor* sensors, int sensornumber,
       // sensor  9 = y direction to the first object (goal detection sensor)
       // sensor 10 = z direction to the first object (goal detection sensor)
       
-      //  8-10 : Landmark 1
-      // 11-13 : Landmark 2
-      // 14-16 : Landmark 3
-      // 17-19 : Landmark 4
-      // 20-22 : Goal      
-      // 23-25 : Box 1
-      // 27-28 : Box 2
-      // 31-31 : Box 3
+      //  8-10 : Landmark 1		(0)
+      // 11-13 : Landmark 2		(1)
+      // 14-16 : Landmark 3		(2)
+      // 17-19 : Landmark 4		(3)
+      // 20-22 : Goal      		(4)
+      // 23-25 : Box 1				(5)
+      // 27-28 : Box 2				(6)
+      // 31-31 : Box 3				(7)
       
       /*****************************************************************************************/
 
@@ -107,17 +109,17 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				speed = 1.0;
       } else if (counter < 700) {       
 				speed = 0.0;
-      } else if (counter < 1700) {
+      } else if (counter < 1200) {
       	vehicle->removeAllGrippables();
-      } else if (counter < 2000){
+      } else if (counter < 1300){
 				speed = -1.0;
       } else {
       	speed = 1.0;
       }
-speed = 0.01;
+
       for (int i = 0; i < number_motors; i++){
         motors[i]=speed;
-      }
+      }	    
 
 };
 
@@ -156,3 +158,4 @@ void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
 		i+=3;
 	}
 }
+
