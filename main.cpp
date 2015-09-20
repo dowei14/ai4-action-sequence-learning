@@ -202,8 +202,8 @@ public:
 
 		generate_boxes(global);
 		grippables.push_back(boxPrimitives[0]);
-		grippables.push_back(boxPrimitives[1]);
-		grippables.push_back(boxPrimitives[2]);		
+//		grippables.push_back(boxPrimitives[1]);
+//		grippables.push_back(boxPrimitives[2]);		
 
 		/**************************************************************************************************
 		***			Set up robot and controller

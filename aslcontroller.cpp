@@ -22,25 +22,28 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
   // DSW temp things
   counter = 0;
   speed = 1.0;
+  
+  // DSW Q-Learning
+	state = 0;
 
 	// things for plotting
-  parameter.resize(16);
+  parameter.resize(2);
   addInspectableValue("parameter1", &parameter.at(0),"parameter1");
   addInspectableValue("parameter2", &parameter.at(1),"parameter2");
-  addInspectableValue("parameter3", &parameter.at(2),"parameter3");
-  addInspectableValue("parameter4", &parameter.at(3),"parameter4");
-  addInspectableValue("parameter5", &parameter.at(4),"parameter5");
-  addInspectableValue("parameter6", &parameter.at(5),"parameter6");
-  addInspectableValue("parameter7", &parameter.at(6),"parameter7");
-  addInspectableValue("parameter8", &parameter.at(7),"parameter8");
-  addInspectableValue("parameter9", &parameter.at(8),"parameter9");
-  addInspectableValue("parameter10", &parameter.at(9),"parameter10");
-  addInspectableValue("parameter11", &parameter.at(10),"parameter11");
-  addInspectableValue("parameter12", &parameter.at(11),"parameter12");
-  addInspectableValue("parameter13", &parameter.at(12),"parameter13");
-  addInspectableValue("parameter14", &parameter.at(13),"parameter14");
-  addInspectableValue("parameter15", &parameter.at(14),"parameter15");
-  addInspectableValue("parameter16", &parameter.at(15),"parameter16");
+//  addInspectableValue("parameter3", &parameter.at(2),"parameter3");
+//  addInspectableValue("parameter4", &parameter.at(3),"parameter4");
+//  addInspectableValue("parameter5", &parameter.at(4),"parameter5");
+//  addInspectableValue("parameter6", &parameter.at(5),"parameter6");
+//  addInspectableValue("parameter7", &parameter.at(6),"parameter7");
+//  addInspectableValue("parameter8", &parameter.at(7),"parameter8");
+//  addInspectableValue("parameter9", &parameter.at(8),"parameter9");
+//  addInspectableValue("parameter10", &parameter.at(9),"parameter10");
+//  addInspectableValue("parameter11", &parameter.at(10),"parameter11");
+//  addInspectableValue("parameter12", &parameter.at(11),"parameter12");
+//  addInspectableValue("parameter13", &parameter.at(12),"parameter13");
+//  addInspectableValue("parameter14", &parameter.at(13),"parameter14");
+//  addInspectableValue("parameter15", &parameter.at(14),"parameter15");
+//  addInspectableValue("parameter16", &parameter.at(15),"parameter16");
 
 
 }
@@ -102,7 +105,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 //			for (int i=0;i<8;i++) parameter.at(2*i) = distances[i];
 //			for (int i=0;i<8;i++) parameter.at((2*i)+1) = angles[i];
 
-      // DSW forward for a bit then backforward for grasping test
+
+/***  // DSW forward for a bit then backforward for grasping test
       counter++;
       if (counter < 420) {
 	      vehicle->addGrippables(grippables);
@@ -120,7 +124,59 @@ void ASLController::step(const sensor* sensors, int sensornumber,
       for (int i = 0; i < number_motors; i++){
         motors[i]=speed;
       }	    
+*/
 
+/********************************************************************************************
+*** Q-Learning
+********************************************************************************************/
+		parameter.at(0) = sensors[4]-sensors[7];
+		parameter.at(1) = sensors[4];
+
+		
+
+		if (state==0) {
+			vehicle->addGrippables(grippables);
+			done = false;
+			boxGripped = false;
+			testBoxCounter = 0;
+			dropBoxCounter = 0;
+			setTarget();
+			state++;
+		} else if (state==1){
+			if(!done) done = goToRandomBox(distances[currentBox],angles[currentBox],motors);
+			else {
+				state++;
+				done = false;
+			}
+		} else if (state==2){
+			if (!done) done = testBox(distances[currentBox],motors,testBoxCounter, boxGripped);
+			else {
+				done = false;
+				if (boxGripped) state++;
+				else state=0;
+			}
+		} else if (state==3){
+			if (!done) done = moveToEdge(sensors[7],sensors[4],motors);
+			else {
+				done = false;
+				state++;
+			}
+		} else if (state==4){
+			if (!done) done = dropBox(vehicle, dropBoxCounter);
+			else {
+				done = false;
+				state++;
+			}
+		} else if (state==5){
+			if (!done) done = crossGap(motors, crossGapCounter);
+			else {
+				done = false;
+				state++;
+			}
+		}
+
+		
+		
 };
 
 
@@ -128,6 +184,102 @@ void ASLController::stepNoLearning(const sensor* , int number_sensors,motor* , i
 	
 };
 
+/*****************************************************************************************
+*** Q-Learning Functions
+*****************************************************************************************/
+void ASLController::setTarget(){
+	std::random_device rd; // obtain a random number from hardware
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<> distr(5, 7); // define the range
+	currentBox = distr(eng);
+}
+
+bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* motors)
+{
+	double left,right;
+	bool finished;
+	if (boxDistance > 0.0008 ){
+		left = 0.5 + boxAngle;
+		right = 0.5 - boxAngle;
+		finished = false;
+	} else{
+		left = 0.0;
+		right = 0.0;
+		finished =true;
+	}	
+	motors[0]=left; motors[2] = left;
+	motors[1]=right; motors[3] = right;
+	return finished;
+}
+
+bool ASLController::testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped){
+	double speed;
+	bool done;
+	if (testBoxCounter < 100){
+		speed = -0.5;
+		testBoxCounter++;
+		done = false;
+	} else {
+		if (boxDistance > 0.0008) isGripped = false;
+		else isGripped = true;
+		done = true;
+		speed = 0.0;
+	}
+	motors[0]=speed; motors[2] = speed;
+	motors[1]=speed; motors[3] = speed;
+	return done;
+}
+
+bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
+	bool done = false;
+	double left,right;
+	double difference = irLeft - irRight;
+	
+	if (irLeft > 0.6 && irRight > 0.6){
+		left = 0.5; right = 0.5;
+	} else if (abs(difference) > 0.2){
+		left = difference;
+		right = difference;
+	} else if (irLeft > 0.5){
+		left = 0.2;
+		right = 0.2;	
+	} else {
+		left = 0.0;
+		right = 0.0;
+		done = true;
+	}
+	
+	motors[0]=left; motors[2] = left;
+	motors[1]=right; motors[3] = right;
+	return done;
+}
+
+bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter){
+	bool done = false;
+	vehicle->removeGrippables(grippables);
+	dropBoxCounter++;
+	if (dropBoxCounter > 1000) done = true;
+	return done;
+}
+
+bool ASLController::crossGap(motor* motors, int& crossGapCounter){
+	bool done = false;
+	speed = 1.0;
+	crossGapCounter++;
+	if (crossGapCounter > 1000) {
+		done = true;
+		speed = 0.0;
+	}
+	motors[0]=speed; motors[2] = speed;
+	motors[1]=speed; motors[3] = speed;
+	return done;
+}
+
+				
+
+/*****************************************************************************************
+*** Sensor Data => relative angle/distance
+*****************************************************************************************/
 //calculate distances
 void ASLController::calculateDistanceToGoals(const sensor* x_)
 {
@@ -158,4 +310,3 @@ void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
 		i+=3;
 	}
 }
-

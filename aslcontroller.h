@@ -42,6 +42,15 @@ class ASLController : public AbstractController {
     double speed;
     double left,right;
     
+    // DSW Q-Learning
+    bool done;
+    int currentBox;
+    int state;
+    bool boxGripped;
+    int testBoxCounter;
+    int dropBoxCounter;
+    int crossGapCounter;
+    
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
@@ -78,6 +87,15 @@ class ASLController : public AbstractController {
 		// DSW
 		virtual void calculateDistanceToGoals(const sensor* x_);
 		virtual void calculateAnglePositionFromSensors(const sensor* x_);
+		
+		// Q-Learning
+		virtual void setTarget();
+		virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
+		virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
+		virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
+		virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
+		virtual bool crossGap(motor* motors, int& crossGapCounter);
+//		virtual int getState();
 
     /********* STORABLE INTERFACE ******/
     /// @see Storable
