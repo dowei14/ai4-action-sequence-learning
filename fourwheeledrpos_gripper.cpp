@@ -205,7 +205,7 @@ namespace lpzrobots {
 
 			// create gripper material and attach it to primitive
 			GripperConf grippConf = Gripper::getDefaultConf();
-			grippConf.gripDuration = 10.0;
+			grippConf.gripDuration = 15.0;
 			grippConf.releaseDuration = 0.0;
 			grippConf.forbitLastPrimitive = false;
 			gripper = new Gripper(grippConf);
@@ -232,7 +232,7 @@ namespace lpzrobots {
       for(int i=-3; i<4; i+=2){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
 				IRSensor* sensor = new IRSensor();
 				irSensorBank.registerSensor(sensor, objects[0],
- 				  Matrix::rotate(-M_PI/10, Vec3(0,1,0)) * // DSW pointing downwards
+ 				  Matrix::rotate(-M_PI/8, Vec3(0,1,0)) * // DSW pointing downwards
 				  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
 				  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
 				  conf.irRangeFront, RaySensor::drawAll);
