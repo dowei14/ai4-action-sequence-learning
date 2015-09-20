@@ -92,22 +92,26 @@ public:
 		double length = 0.9;
 		double width = 0.9;
 		double height = 0.9;
+		Substance material(5.0,10.0,99.0,1.0);
+		double mass = 0.1;
 		PassiveBox* b1;
-  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),0.1);
+  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
   	b1->setColor(Color(0,1,0));
-  	b1->setSubstance(Substance(5.0,10.0,99.0,1.0));
+  	b1->setSubstance(material);
   	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
 		global.obstacles.push_back(b1);
 		
 		PassiveBox* b2;
-  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
   	b2->setColor(Color(1,0,0));
+  	b2->setSubstance(material);
   	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
 		global.obstacles.push_back(b2);
 
 		PassiveBox* b3;
-  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height));
+  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
   	b3->setColor(Color(1,0,0));
+  	b3->setSubstance(material);  	
   	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
 		global.obstacles.push_back(b3);	
 		
@@ -198,6 +202,8 @@ public:
 
 		generate_boxes(global);
 		grippables.push_back(boxPrimitives[0]);
+		grippables.push_back(boxPrimitives[1]);
+		grippables.push_back(boxPrimitives[2]);		
 
 		/**************************************************************************************************
 		***			Set up robot and controller
