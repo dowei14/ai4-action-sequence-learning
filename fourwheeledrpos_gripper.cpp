@@ -205,7 +205,7 @@ namespace lpzrobots {
 
 			// create gripper material and attach it to primitive
 			GripperConf grippConf = Gripper::getDefaultConf();
-			grippConf.gripDuration = 1.0;
+			grippConf.gripDuration = 10.0;
 			grippConf.releaseDuration = 0.0;
 			grippConf.forbitLastPrimitive = false;
 			gripper = new Gripper(grippConf);
