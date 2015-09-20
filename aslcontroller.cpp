@@ -18,6 +18,8 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	// DSW
   vehicle = vehicleIn;
 	grippables = grippablesIn;
+	for (int i=0;i<4;i++) irSmooth[i]=0;
+	smoothingFactor = 20.0;
 
   // DSW temp things
   counter = 0;
@@ -101,6 +103,10 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			// calculate relative distances and angles from sensor value, normalized to 0..1 for distance and -1..1 for angle
 			calculateDistanceToGoals(sensors);
 			calculateAnglePositionFromSensors(sensors);
+			
+			// smooth ir sensors
+			for (int i=0;i<4;i++) irSmooth[i] += (sensors[4+i]-irSmooth[i])/smoothingFactor;
+
 
 //			for (int i=0;i<8;i++) parameter.at(2*i) = distances[i];
 //			for (int i=0;i<8;i++) parameter.at((2*i)+1) = angles[i];
@@ -129,8 +135,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 /********************************************************************************************
 *** Q-Learning
 ********************************************************************************************/
-		parameter.at(0) = sensors[4]-sensors[7];
-		parameter.at(1) = sensors[4];
+		parameter.at(0) = irSmooth[0];
+		parameter.at(1) = irSmooth[3];
 
 		
 
@@ -156,7 +162,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				else state=0;
 			}
 		} else if (state==3){
-			if (!done) done = moveToEdge(sensors[7],sensors[4],motors);
+//			if (!done) done = moveToEdge(sensors[7],sensors[4],motors);
+			if (!done) done = moveToEdge(irSmooth[3],irSmooth[0],motors);
 			else {
 				done = false;
 				state++;
@@ -235,14 +242,19 @@ bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
 	double left,right;
 	double difference = irLeft - irRight;
 	
-	if (irLeft > 0.6 && irRight > 0.6){
+	if (irLeft > 0.7 && irRight > 0.7){
 		left = 0.5; right = 0.5;
-	} else if (abs(difference) > 0.2){
-		left = difference;
-		right = difference;
-	} else if (irLeft > 0.5){
-		left = 0.2;
-		right = 0.2;	
+	} else if (abs(difference) > 0.05){
+		if (difference > 0){
+			left = 0.15;
+			right = -0.05;
+		} else {
+			left = -0.05;
+			right = 0.15;
+		}
+	} else if (irLeft > 0.7 || irRight > 0.7){
+		left = 0.1;
+		right = 0.1;	
 	} else {
 		left = 0.0;
 		right = 0.0;
@@ -258,15 +270,15 @@ bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dro
 	bool done = false;
 	vehicle->removeGrippables(grippables);
 	dropBoxCounter++;
-	if (dropBoxCounter > 1000) done = true;
+	if (dropBoxCounter > 1200) done = true;
 	return done;
 }
 
 bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 	bool done = false;
-	speed = 1.0;
+	speed = 0.5;
 	crossGapCounter++;
-	if (crossGapCounter > 1000) {
+	if (crossGapCounter > 300) {
 		done = true;
 		speed = 0.0;
 	}

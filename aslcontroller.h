@@ -36,7 +36,8 @@ class ASLController : public AbstractController {
     std::vector<lpzrobots::Primitive*> grippables;
     double distances [number_relative_sensors];
 		double angles [number_relative_sensors];
-
+		double irSmooth[4];
+		double smoothingFactor;
 		// DSW temp stuff for testing
     int counter;
     double speed;
@@ -50,6 +51,8 @@ class ASLController : public AbstractController {
     int testBoxCounter;
     int dropBoxCounter;
     int crossGapCounter;
+    
+
     
     //Define global parameters-end//
 
