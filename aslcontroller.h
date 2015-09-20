@@ -7,6 +7,7 @@
 
 // DSW
 #include <fourwheeledrpos_gripper.h>
+#include <cmath> //pow sqrt
 
 
 /*********************************************************************
@@ -33,9 +34,11 @@ class ASLController : public AbstractController {
     // DSW
     int counter;
     double speed;
+    double left,right;
     lpzrobots::FourWheeledRPosGripper* vehicle;
     std::vector<lpzrobots::Primitive*> grippables;
     double distances [number_relative_sensors];
+		double angles [number_relative_sensors];
     
     //Define global parameters-end//
 
@@ -70,7 +73,7 @@ class ASLController : public AbstractController {
     virtual void stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors);
 
 		virtual void calculateDistanceToGoals(const sensor* x_);
-
+		virtual void calculateAnglePositionFromSensors(const sensor* x_);
     /********* STORABLE INTERFACE ******/
     /// @see Storable
     virtual bool store(FILE* f) const {

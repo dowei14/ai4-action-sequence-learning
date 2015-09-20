@@ -168,7 +168,7 @@ public:
 		// initialization simulation parameters
 
 		//1) - set noise to 0.1
-		global.odeConfig.noise= 0.02;//0.05;
+		global.odeConfig.noise= 0.0;//0.02;//0.05;
 
 
 		//2) - set controlinterval -> default = 1
