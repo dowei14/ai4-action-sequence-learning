@@ -28,7 +28,6 @@
 #include <ode_robots/raysensorbank.h>
 
 //DSW
-#include <ode_robots/joint.h>
 #include <ode_robots/gripper.h>
 
 #include <iostream>
