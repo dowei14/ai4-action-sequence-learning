@@ -206,7 +206,7 @@ void FSMController::stepNoLearning(const sensor* , int number_sensors,motor* , i
 };
 
 /*****************************************************************************************
-*** Q-Learning Functions
+*** FSM Functions
 *****************************************************************************************/
 void FSMController::setTarget(){
 	std::random_device rd; // obtain a random number from hardware

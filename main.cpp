@@ -33,15 +33,15 @@
 #include <ode_robots/passivebox.h>
 
 // controller
-//#include "aslcontroller.h"
-#include "fsmcontroller.h"
+#include "aslcontroller.h"
+//#include "fsmcontroller.h"
 
 // fetch all the stuff of lpzrobots into scope
 using namespace lpzrobots;
 
 
-//ASLController* qcontroller;
-FSMController* qcontroller;
+ASLController* qcontroller;
+//FSMController* qcontroller;
 
 // relative_sensors
 std::vector<AbstractObstacle*> relative_sensor_obst;
@@ -212,7 +212,7 @@ public:
 		**************************************************************************************************/
 
 		//1) Activate IR sensors
-  	FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
+  		FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
 
 		///2) relative sensors
 		for (unsigned int i=0; i < relative_sensor_obst.size(); i++){
@@ -221,12 +221,12 @@ public:
 		FourWheeledRPosGripper* vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
 
 		/****Initial position of Nimm4******/
-    Pos pos(0.0 , 0.0 , 1.0);
-    //setting position and orientation
-    vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
+    	Pos pos(0.0 , 0.0 , 1.0);
+    	//setting position and orientation
+    	vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 		
-//		qcontroller = new ASLController("1","1", vehicle, grippables);
-		qcontroller = new FSMController("1","1", vehicle, grippables);
+		qcontroller = new ASLController("1","1", vehicle, grippables);
+//		qcontroller = new FSMController("1","1", vehicle, grippables);
 		global.configs.push_back(qcontroller);
 
 		// create pointer to one2onewiring

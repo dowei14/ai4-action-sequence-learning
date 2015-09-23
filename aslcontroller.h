@@ -36,7 +36,7 @@ class ASLController : public AbstractController {
     std::vector<lpzrobots::Primitive*> grippables;
 	double distances [number_relative_sensors];
 	double angles [number_relative_sensors];
-	double irSmooth[4];
+	double irSmooth[6];
 	double smoothingFactor;
 	// DSW temp stuff for testing
     int counter;
@@ -54,10 +54,7 @@ class ASLController : public AbstractController {
 	
 	double Q[6][6];
 	double reward;
-
-    
-
-    
+   
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
@@ -84,25 +81,26 @@ class ASLController : public AbstractController {
       return number_motors;
     };
 
-		// perform one step with learning
-		virtual void step(const sensor* sensors, int sensornumber, motor* motors, int motornumber);
+	// perform one step with learning
+	virtual void step(const sensor* sensors, int sensornumber, motor* motors, int motornumber);
 
-		// perform one step without learning
+	// perform one step without learning
     virtual void stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors);
 
 
-		// DSW
-		virtual void calculateDistanceToGoals(const sensor* x_);
-		virtual void calculateAnglePositionFromSensors(const sensor* x_);
+	// DSW
+	virtual void calculateDistanceToGoals(const sensor* x_);
+	virtual void calculateAnglePositionFromSensors(const sensor* x_);
 		
-		// Q-Learning
-		virtual void setTarget();
-		virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
-		virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
-		virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
-		virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
-		virtual bool crossGap(motor* motors, int& crossGapCounter);
-		virtual int getState(const sensor* sensors, bool& isGripped, Position pos);
+	// Q-Learning
+	virtual void setTarget();
+	virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
+	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
+	virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
+	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors);
+	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
+	virtual bool crossGap(motor* motors, int& crossGapCounter);
+	virtual int getState(const sensor* sensors, bool& isGripped, Position pos);
 
     /********* STORABLE INTERFACE ******/
     /// @see Storable
