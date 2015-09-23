@@ -183,7 +183,7 @@ void FSMController::step(const sensor* sensors, int sensornumber,
 				dropBoxCounter = counter;
 			}
 		} else if (state==5){
-			if (!done) done = dropBox(vehicle, dropBoxCounter);
+			if (!done) done = dropBox(vehicle, dropBoxCounter, boxGripped);
 			else {
 				done = false;
 				state++;
@@ -295,11 +295,14 @@ bool FSMController::orientAtEdge(double irLeftLong, double irRightLong, double i
 	return done;
 }
 
-bool FSMController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter){
+bool FSMController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped){
 	bool done = false;
 	vehicle->removeGrippables(grippables);
 	dropBoxCounter++;
-	if (dropBoxCounter > 3000) done = true;
+	if (dropBoxCounter > 3000) {
+		done = true;
+		isGripped = false;
+	}
 	return done;
 }
 

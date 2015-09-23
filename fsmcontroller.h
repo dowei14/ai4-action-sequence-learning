@@ -95,7 +95,7 @@ class FSMController : public AbstractController {
 	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
 	virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
 	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors);
-	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
+	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
 		
     /********* STORABLE INTERFACE ******/
