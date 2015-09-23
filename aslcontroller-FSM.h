@@ -34,11 +34,11 @@ class ASLController : public AbstractController {
     // DSW
     lpzrobots::FourWheeledRPosGripper* vehicle;
     std::vector<lpzrobots::Primitive*> grippables;
-	double distances [number_relative_sensors];
-	double angles [number_relative_sensors];
-	double irSmooth[4];
-	double smoothingFactor;
-	// DSW temp stuff for testing
+    double distances [number_relative_sensors];
+		double angles [number_relative_sensors];
+		double irSmooth[4];
+		double smoothingFactor;
+		// DSW temp stuff for testing
     int counter;
     double speed;
     double left,right;
@@ -50,11 +50,7 @@ class ASLController : public AbstractController {
     bool boxGripped;
     int testBoxCounter;
     int dropBoxCounter;
-	int crossGapCounter;
-	
-	double Q[6][6];
-	double reward;
-
+    int crossGapCounter;
     
 
     
@@ -102,7 +98,7 @@ class ASLController : public AbstractController {
 		virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
 		virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
 		virtual bool crossGap(motor* motors, int& crossGapCounter);
-		virtual int getState(const sensor* sensors, bool& isGripped, Position pos);
+//		virtual int getState();
 
     /********* STORABLE INTERFACE ******/
     /// @see Storable

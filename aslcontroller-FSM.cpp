@@ -27,11 +27,6 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
   
   // DSW Q-Learning
 	state = 0;
-	for(int i_s = 0; i_s <6; ++i_s) {
-		for(int i_a = 0; i_a <6; ++i_a) {
-			Q[i_a][i_s] = (double)(rand()%1000)/9000.0;
-		}
-	}
 
 	// things for plotting
   parameter.resize(2);
@@ -138,9 +133,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 */
 
 /********************************************************************************************
-*** FSM 
+*** Q-Learning
 ********************************************************************************************/
-/*
 		parameter.at(0) = irSmooth[0];
 		parameter.at(1) = irSmooth[3];
 
@@ -187,32 +181,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				state++;
 			}
 		}
-*/
-/********************************************************************************************
-*** Q-Learning
-********************************************************************************************/		
-//	std::cout<<std::endl<<getState(sensors, boxGripped, vehicle->getPosition())<<std::endl;
-		parameter.at(0) = vehicle->getPosition().x;
-		parameter.at(1) = vehicle->getPosition().y;
 
-      for (int i = 0; i < number_motors; i++){
-        motors[i]=0.2;
-      }	   
-
-
-
-
-
-/*
-set reward
-store previous values
-action selection
-update qtable
-*/
-
-
-
-
+		
 		
 };
 
@@ -226,13 +196,9 @@ void ASLController::stepNoLearning(const sensor* , int number_sensors,motor* , i
 *****************************************************************************************/
 void ASLController::setTarget(){
 	std::random_device rd; // obtain a random number from hardware
-	std::mt19937 eng(rd()); // seed the generator
-	std::uniform_int_distribution<> distr(5, 7); // define the range
+  std::mt19937 eng(rd()); // seed the generator
+  std::uniform_int_distribution<> distr(5, 7); // define the range
 	currentBox = distr(eng);
-
-// TMP for simplicity make it the right box for now
-	currentBox = 5;
-// end TMP
 }
 
 bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* motors)
@@ -321,30 +287,7 @@ bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 	return done;
 }
 
-int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos){
-	int x,y;
-	x=pos.x; y=pos.y;
-	int state =-1;
-
-	if (x<=8 && y <=8){
-		if(sensors[5]<0.8 && sensors[6]<0.8){
-			state=0;
-		} else {
-			if (isGripped) state=2;
-			else state=1
-		}
-	}
-
-	if ((x>8 && x <9) | (y > 8 && y < 9)) {
-		if (isGripped) state=3
-		else state=4;
-	}
-
-	if (x>11 | y > 11) return 5;
-
-	return state;
-}
-
+				
 
 /*****************************************************************************************
 *** Sensor Data => relative angle/distance
