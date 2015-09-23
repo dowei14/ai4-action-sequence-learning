@@ -190,7 +190,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				dropBoxCounter = counter;
 			}
 		} else if (state==5){
-			if (!done) done = dropBox(vehicle, dropBoxCounter);
+			if (!done) done = dropBox(vehicle, dropBoxCounter, boxGripped);
 			else {
 				done = false;
 				state++;
@@ -208,11 +208,11 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 /********************************************************************************************
 *** Q-Learning
 ********************************************************************************************/		
-/*
+
 	std::cout<<std::endl<<getState(sensors, boxGripped, vehicle->getPosition())<<std::endl;
 		parameter.at(0) = vehicle->getPosition().x;
 		parameter.at(1) = vehicle->getPosition().y;
-
+/*
       for (int i = 0; i < number_motors; i++){
         motors[i]=0.2;
       }	   
@@ -329,11 +329,14 @@ bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double i
 	return done;
 }
 
-bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter){
+bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped){
 	bool done = false;
 	vehicle->removeGrippables(grippables);
 	dropBoxCounter++;
-	if (dropBoxCounter > 3000) done = true;
+	if (dropBoxCounter > 3500) {
+		done = true;
+		isGripped = false;
+	}
 	return done;
 }
 
@@ -351,11 +354,11 @@ bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 }
 
 int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos){
-	int x,y;
-	x=pos.x; y=pos.y;
+	double x,y;
+	x=abs(pos.x); y=abs(pos.y);
 	int state =-1;
 
-	if ((x<=8) && (y<=8)){
+	if ((x<=9) && (y<=9)){
 		if(sensors[5]<0.8 && sensors[6]<0.8){
 			state=0;
 		} else {
@@ -364,12 +367,12 @@ int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos
 		}
 	}
 
-	if (((x>8) && (x<9)) | ((y > 8) && (y < 9))) {
+	if (((x>9) && (x<9.5)) | ((y > 9) && (y < 9.5))) {
 		if (isGripped) state=3;
 		else state=4;
 	}
 
-	if ((x>11) | (y > 11)) return 5;
+	if ((x>11) | (y > 11)) state =5;
 
 	return state;
 }
