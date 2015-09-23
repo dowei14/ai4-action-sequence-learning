@@ -91,36 +91,36 @@ public:
 	// generate 3 goal boxes return Primitives(vector of Primitive*) of boxes to add to grippables
 	void generate_boxes(GlobalData& global)
 	{
-		double length = 0.9;
-		double width = 0.9;
+		double length = 0.88;
+		double width = 0.88;
 		double height = 0.9;
 		Substance material(5.0,10.0,99.0,1.0);
 		double mass = 0.1;
 		PassiveBox* b1;
-  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
-  	b1->setColor(Color(0,1,0));
-  	b1->setSubstance(material);
-  	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
+	  	b1 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
+	  	b1->setColor(Color(0,1,0));
+	  	b1->setSubstance(material);
+	  	b1->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(-5,0,1.5));
 		global.obstacles.push_back(b1);
 		
-		PassiveBox* b2;
-  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
-  	b2->setColor(Color(1,0,0));
-  	b2->setSubstance(material);
-  	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
+			PassiveBox* b2;
+	  	b2 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
+	  	b2->setColor(Color(1,0,0));
+	  	b2->setSubstance(material);
+	  	b2->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(5,0,1.5));
 		global.obstacles.push_back(b2);
 
-		PassiveBox* b3;
-  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
-  	b3->setColor(Color(1,0,0));
-  	b3->setSubstance(material);  	
-  	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
+			PassiveBox* b3;
+	  	b3 = new PassiveBox(odeHandle, osgHandle, osg::Vec3(length, width, height),mass);
+	  	b3->setColor(Color(1,0,0));
+	  	b3->setSubstance(material);  	
+	  	b3->setPose(osg::Matrix::rotate(0, 0,0, 1) * osg::Matrix::translate(0,-5,1.5));
 		global.obstacles.push_back(b3);	
 		
 		boxPrimitives.push_back(b1->getMainPrimitive());
 		boxPrimitives.push_back(b2->getMainPrimitive());
 		boxPrimitives.push_back(b3->getMainPrimitive());
-		
+	
 		// adding boxes to obstacle vector so it can be connected to sensors
 		relative_sensor_obst.push_back(b1);
 		relative_sensor_obst.push_back(b2);
@@ -143,7 +143,7 @@ public:
 		global.obstacles.push_back(playground);
 
 		// DSW: outer_pg = outter platform
-  	double length_outer_pg = 22.0;
+  		double length_outer_pg = 22.0;
 		double width_outer_pg = 5.0;
 		double height_outer_pg = 1.0;
 
@@ -152,15 +152,15 @@ public:
 		outer_playground->setPosition(osg::Vec3(0,0,0.0));
 		global.obstacles.push_back(outer_playground);
 
-  	// DSW: outer_pg2 = walls
-  	double length_outer_pg2 = 32.0;
+  		// DSW: outer_pg2 = walls
+  		double length_outer_pg2 = 32.0;
 		double width_outer_pg2 = 1.0;
 		double height_outer_pg2 = 2.0;
 
 		Playground* outer_playground2 = new Playground(odeHandle, osgHandle.changeColor(Color(0.6,0.0,0.6)),
 					osg::Vec3(length_outer_pg2 /*length*/, width_outer_pg2 /*width*/, height_outer_pg2/*height*/), /*factorxy = 1*/1, /*createGround=true*/true /*false*/);
 		outer_playground2->setPosition(osg::Vec3(0,0,0.0));
-  	global.obstacles.push_back(outer_playground2);
+  		global.obstacles.push_back(outer_playground2);
 	}
 
 	// starting function (executed once at the beginning of the simulation loop)
