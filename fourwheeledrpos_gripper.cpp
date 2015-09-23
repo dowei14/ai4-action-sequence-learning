@@ -205,7 +205,7 @@ namespace lpzrobots {
 
 			// create gripper material and attach it to primitive
 			GripperConf grippConf = Gripper::getDefaultConf();
-			grippConf.gripDuration = 15.0;
+			grippConf.gripDuration = 30.0;
 			grippConf.releaseDuration = 0.0;
 			grippConf.forbitLastPrimitive = false;
 			gripper = new Gripper(grippConf);
@@ -227,55 +227,71 @@ namespace lpzrobots {
     irSensorBank.setInitData(odeHandle, osgHandle, TRANSM(0,0,0));
     irSensorBank.init(0);
 
-		// DSW 4 front laser sensors pointing downwards to detect the gap
-    if (conf.irFront){ // add front left and front right infrared sensor to sensorbank if required
-      for(int i=-3; i<4; i+=2){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
-				IRSensor* sensor = new IRSensor();
-				irSensorBank.registerSensor(sensor, objects[0],
- 				  Matrix::rotate(-M_PI/8, Vec3(0,1,0)) * // DSW pointing downwards
-				  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
-				  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
-				  conf.irRangeFront, RaySensor::drawAll);
-      }
+	// DSW 4 front laser sensors pointing downwards to detect the gap
+	if (conf.irFront){ // add front left and front right infrared sensor to sensorbank if required
+		for(int i=-1; i<2; i+=2){ //for(int i=-1; i<2; i+=2){ 
+			IRSensor* sensor = new IRSensor();
+			irSensorBank.registerSensor(sensor, objects[0],
+			  Matrix::rotate(-M_PI/8, Vec3(0,1,0)) * // DSW pointing downwards
+			  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
+			  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
+			  conf.irRangeFront, RaySensor::drawAll);
+      	}
+		for(int i=-3; i<4; i+=6){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
+			IRSensor* sensor = new IRSensor();
+			irSensorBank.registerSensor(sensor, objects[0],
+			  Matrix::rotate(-M_PI/7.7, Vec3(0,1,0)) * // DSW pointing downwards
+			  Matrix::rotate(i*M_PI/7.7, Vec3(1,0,0)) *
+			  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
+			  conf.irRangeFront, RaySensor::drawAll);
+      	}
+		for(int i=-3; i<4; i+=6){ //for(int i=-1; i<2; i+=2){ // DSW added 2 more sensors
+			IRSensor* sensor = new IRSensor();
+			irSensorBank.registerSensor(sensor, objects[0],
+			  Matrix::rotate(-M_PI/7, Vec3(0,1,0)) * // DSW pointing downwards
+			  Matrix::rotate(i*M_PI/7, Vec3(1,0,0)) *
+			  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
+			  conf.irRangeFront, RaySensor::drawAll);
+      	}
     }
     if (conf.irSide){ // add right infrared sensors to sensorbank if required
-      IRSensor* sensor = new IRSensor();
-      irSensorBank.registerSensor(sensor, objects[0],
-				  //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-				  Matrix::rotate(M_PI/4, Vec3(1,0,0)) *
-				  Matrix::translate(0,-width/2, 0 ),
-				  conf.irRangeSide, RaySensor::drawAll);
-       sensor = new IRSensor();
-      irSensorBank.registerSensor(sensor, objects[0],
-          //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-          Matrix::rotate(M_PI/6, Vec3(1,0,0)) *
-          Matrix::translate(-width/6,-width/2, 0 ),
-          conf.irRangeSide, RaySensor::drawAll);
+		IRSensor* sensor = new IRSensor();
+		irSensorBank.registerSensor(sensor, objects[0],
+			//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+			Matrix::rotate(M_PI/4, Vec3(1,0,0)) *
+			Matrix::translate(0,-width/2, 0 ),
+			conf.irRangeSide, RaySensor::drawAll);
+		sensor = new IRSensor();
+		irSensorBank.registerSensor(sensor, objects[0],
+			//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+			Matrix::rotate(M_PI/6, Vec3(1,0,0)) *
+			Matrix::translate(-width/6,-width/2, 0 ),
+			conf.irRangeSide, RaySensor::drawAll);
     }
 
     if (conf.irBack){ // add rear right and rear left infrared sensor to sensorbank if required
       for(int i=-1; i<2; i+=2){
-				IRSensor* sensor = new IRSensor();
-				irSensorBank.registerSensor(sensor, objects[0],
-									Matrix::rotate(-i*M_PI/10, Vec3(1,0,0)) *
-									Matrix::rotate(i*M_PI, Vec3(0,1,0)) *
-									Matrix::translate(0,i*width/10,-(length/2 + width/2 - width/60) ),
-									conf.irRangeBack, RaySensor::drawAll);
-      }
-    }
-    if (conf.irSide){ // add left infrared sensors to sensorbank if required
 			IRSensor* sensor = new IRSensor();
 			irSensorBank.registerSensor(sensor, objects[0],
-								//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-								Matrix::rotate(-M_PI/4, Vec3(1,0,0)) *
-								Matrix::translate(0,width/2, 0),
-								conf.irRangeSide, RaySensor::drawAll);
-			 sensor = new IRSensor();
-			irSensorBank.registerSensor(sensor, objects[0],
-				        //Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
-				        Matrix::rotate(-M_PI/6, Vec3(1,0,0)) *
-				        Matrix::translate(-width/6,width/2, 0),
-				        conf.irRangeSide, RaySensor::drawAll);
+				Matrix::rotate(-i*M_PI/10, Vec3(1,0,0)) *
+				Matrix::rotate(i*M_PI, Vec3(0,1,0)) *
+				Matrix::translate(0,i*width/10,-(length/2 + width/2 - width/60) ),
+				conf.irRangeBack, RaySensor::drawAll);
+      }
+    }
+	if (conf.irSide){ // add left infrared sensors to sensorbank if required
+		IRSensor* sensor = new IRSensor();
+		irSensorBank.registerSensor(sensor, objects[0],
+			//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+			Matrix::rotate(-M_PI/4, Vec3(1,0,0)) *
+			Matrix::translate(0,width/2, 0),
+			conf.irRangeSide, RaySensor::drawAll);
+		sensor = new IRSensor();
+		irSensorBank.registerSensor(sensor, objects[0],
+			//Matrix::rotate(i*M_PI/2, Vec3(0,0,1)) *
+			Matrix::rotate(-M_PI/6, Vec3(1,0,0)) *
+			Matrix::translate(-width/6,width/2, 0),
+			conf.irRangeSide, RaySensor::drawAll);
     }
   };
 
