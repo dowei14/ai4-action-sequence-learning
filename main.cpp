@@ -33,13 +33,15 @@
 #include <ode_robots/passivebox.h>
 
 // controller
-#include "aslcontroller.h"
+//#include "aslcontroller.h"
+#include "fsmcontroller.h"
 
 // fetch all the stuff of lpzrobots into scope
 using namespace lpzrobots;
 
 
-ASLController* qcontroller;
+//ASLController* qcontroller;
+FSMController* qcontroller;
 
 // relative_sensors
 std::vector<AbstractObstacle*> relative_sensor_obst;
@@ -223,7 +225,8 @@ public:
     //setting position and orientation
     vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 		
-		qcontroller = new ASLController("1","1", vehicle, grippables);
+//		qcontroller = new ASLController("1","1", vehicle, grippables);
+		qcontroller = new FSMController("1","1", vehicle, grippables);
 		global.configs.push_back(qcontroller);
 
 		// create pointer to one2onewiring

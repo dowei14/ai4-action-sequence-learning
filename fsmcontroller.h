@@ -1,5 +1,5 @@
-#ifndef __ASLCONTROLLER_H
-#define __ASLCONTROLLER_H
+#ifndef __FSMCONTROLLER_H
+#define __FSMCONTROLLER_H
 
 
 #include <selforg/abstractcontroller.h>
@@ -24,7 +24,7 @@
  *
  * Dominik Steven Weickgenannt (dowei14@student.sdu.dk 2015/2016)
  */
-class ASLController : public AbstractController {
+class FSMController : public AbstractController {
   public:
 
     //Define global parameters-begin//
@@ -43,7 +43,7 @@ class ASLController : public AbstractController {
     double speed;
     double left,right;
     
-    // DSW Q-Learning
+    // DSW FSM Control
     bool done;
     int currentBox;
     int state;
@@ -57,7 +57,7 @@ class ASLController : public AbstractController {
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
-    ASLController(const std::string& name, const std::string& revision, 
+    FSMController(const std::string& name, const std::string& revision, 
     		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn);
 
     /** initialization of the controller with the given sensor/ motornumber
@@ -91,15 +91,14 @@ class ASLController : public AbstractController {
 		virtual void calculateDistanceToGoals(const sensor* x_);
 		virtual void calculateAnglePositionFromSensors(const sensor* x_);
 		
-		// Q-Learning
+		// FSM - Behaviours
 		virtual void setTarget();
 		virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
 		virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
 		virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
 		virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter);
 		virtual bool crossGap(motor* motors, int& crossGapCounter);
-//		virtual int getState();
-
+		
     /********* STORABLE INTERFACE ******/
     /// @see Storable
     virtual bool store(FILE* f) const {

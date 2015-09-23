@@ -1,4 +1,4 @@
-#include "aslcontroller.h"
+#include "fsmcontroller.h"
 
 /**
  * Action-Sequence-Learning Controller for 
@@ -11,7 +11,7 @@
  
  
 
-ASLController::ASLController(const std::string& name, const std::string& revision, 
+FSMController::FSMController(const std::string& name, const std::string& revision, 
 		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn)
 	: AbstractController(name, revision){
 
@@ -59,7 +59,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 ***   @param motors motors outputs. MUST have enough space for motor values!
 ***   @param motornumber length of the provided motor array
 *************************************************************************************************/
-void ASLController::step(const sensor* sensors, int sensornumber,
+void FSMController::step(const sensor* sensors, int sensornumber,
       motor* motors, int motornumber){
       assert(number_sensors == sensornumber);
       assert(number_motors == motornumber);
@@ -187,21 +187,21 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 };
 
 
-void ASLController::stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors){
+void FSMController::stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors){
 	
 };
 
 /*****************************************************************************************
 *** Q-Learning Functions
 *****************************************************************************************/
-void ASLController::setTarget(){
+void FSMController::setTarget(){
 	std::random_device rd; // obtain a random number from hardware
   std::mt19937 eng(rd()); // seed the generator
   std::uniform_int_distribution<> distr(5, 7); // define the range
 	currentBox = distr(eng);
 }
 
-bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* motors)
+bool FSMController::goToRandomBox(double boxDistance, double boxAngle, motor* motors)
 {
 	double left,right;
 	bool finished;
@@ -219,7 +219,7 @@ bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* mo
 	return finished;
 }
 
-bool ASLController::testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped){
+bool FSMController::testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped){
 	double speed;
 	bool done;
 	if (testBoxCounter < 100){
@@ -237,7 +237,7 @@ bool ASLController::testBox(double boxDistance, motor* motors, int& testBoxCount
 	return done;
 }
 
-bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
+bool FSMController::moveToEdge(double irLeft, double irRight, motor* motors){
 	bool done = false;
 	double left,right;
 	double difference = irLeft - irRight;
@@ -266,7 +266,7 @@ bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
 	return done;
 }
 
-bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter){
+bool FSMController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter){
 	bool done = false;
 	vehicle->removeGrippables(grippables);
 	dropBoxCounter++;
@@ -274,7 +274,7 @@ bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dro
 	return done;
 }
 
-bool ASLController::crossGap(motor* motors, int& crossGapCounter){
+bool FSMController::crossGap(motor* motors, int& crossGapCounter){
 	bool done = false;
 	speed = 0.5;
 	crossGapCounter++;
@@ -293,7 +293,7 @@ bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 *** Sensor Data => relative angle/distance
 *****************************************************************************************/
 //calculate distances
-void ASLController::calculateDistanceToGoals(const sensor* x_)
+void FSMController::calculateDistanceToGoals(const sensor* x_)
 {
 	double distance_scale = 0.0005; // should normalize it to 0..1
   double distance;
@@ -304,7 +304,7 @@ void ASLController::calculateDistanceToGoals(const sensor* x_)
 }
 
 //calculate relative angles
-void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
+void FSMController::calculateAnglePositionFromSensors(const sensor* x_)
 {
 	int i=0;
 	for (int counter=0; counter<number_relative_sensors; ++counter)

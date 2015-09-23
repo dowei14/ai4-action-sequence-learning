@@ -326,21 +326,21 @@ int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos
 	x=pos.x; y=pos.y;
 	int state =-1;
 
-	if (x<=8 && y <=8){
+	if ((x<=8) && (y<=8)){
 		if(sensors[5]<0.8 && sensors[6]<0.8){
 			state=0;
 		} else {
 			if (isGripped) state=2;
-			else state=1
+			else state=1;
 		}
 	}
 
-	if ((x>8 && x <9) | (y > 8 && y < 9)) {
-		if (isGripped) state=3
+	if (((x>8) && (x<9)) | ((y > 8) && (y < 9))) {
+		if (isGripped) state=3;
 		else state=4;
 	}
 
-	if (x>11 | y > 11) return 5;
+	if ((x>11) | (y > 11)) return 5;
 
 	return state;
 }
