@@ -43,6 +43,8 @@ using namespace lpzrobots;
 ASLController* qcontroller;
 //FSMController* qcontroller;
 
+FourWheeledRPosGripper* vehicle;
+
 // relative_sensors
 std::vector<AbstractObstacle*> relative_sensor_obst;
 
@@ -218,7 +220,7 @@ public:
 		for (unsigned int i=0; i < relative_sensor_obst.size(); i++){
 			fconf.rpos_sensor_references.push_back(relative_sensor_obst.at(i)->getMainPrimitive());
 		}
-		FourWheeledRPosGripper* vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
+		vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
 
 		/****Initial position of Nimm4******/
     	Pos pos(0.0 , 0.0 , 1.0);
@@ -240,6 +242,47 @@ public:
 		global.agents.push_back(agent);
 
 
+	}
+
+
+	// starting function (executed once at the beginning of the simulation loop)
+	virtual bool restart(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
+	{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// places the robot correctly but fucks up sensors figure out whats the heps
+
+    	Pos pos(0.0 , 0.0 , 1.0);
+    	//setting position and orientation
+    	global.agents[0]->getRobot()->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
+		return true;
+
+	}
+	
+	/** optional additional callback function which is called every simulation step.
+	      Called between physical simulation step and drawing.
+	      @param draw indicates that objects are drawn in this timestep
+	      @param pause always false (only called of simulation is running)
+	      @param control indicates that robots have been controlled this timestep
+	 */
+
+
+	virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control)
+	{
+		std::cout<<globalData.sim_step<<std::endl;
+		if (globalData.sim_step > 300) simulation_time_reached=true;
 	}
 
 
