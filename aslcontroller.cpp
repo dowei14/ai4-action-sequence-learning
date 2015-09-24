@@ -209,7 +209,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 *** Q-Learning
 ********************************************************************************************/		
 
-	std::cout<<std::endl<<getState(sensors, boxGripped, vehicle->getPosition())<<std::endl;
+//	std::cout<<std::endl<<getState(sensors, boxGripped, vehicle->getPosition())<<std::endl;
 		parameter.at(0) = vehicle->getPosition().x;
 		parameter.at(1) = vehicle->getPosition().y;
 /*

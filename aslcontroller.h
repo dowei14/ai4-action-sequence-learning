@@ -87,8 +87,7 @@ class ASLController : public AbstractController {
 	// perform one step without learning
     virtual void stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors);
 
-
-	// DSW
+	// DSW Sensors to angle/distance functions
 	virtual void calculateDistanceToGoals(const sensor* x_);
 	virtual void calculateAnglePositionFromSensors(const sensor* x_);
 		
