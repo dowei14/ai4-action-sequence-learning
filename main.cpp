@@ -235,8 +235,7 @@ public:
 		AbstractWiring*  wiring = new One2OneWiring(new ColorUniformNoise(0.1));
 
 		// create pointer to agent
-		plotoptions.push_back(PlotOption(NoPlot /*select "File" to save signals, "NoPlot" to not save*/));
-		OdeAgent* agent = new OdeAgent(plotoptions);
+		OdeAgent* agent = new OdeAgent(global);
 
 		agent->init(qcontroller, vehicle, wiring);///////////// Initial controller!!!
 		global.agents.push_back(agent);
@@ -331,8 +330,7 @@ public:
 		AbstractWiring*  wiring = new One2OneWiring(new ColorUniformNoise(0.1));
 
 		// create pointer to agent
-		plotoptions.push_back(PlotOption(NoPlot /*select "File" to save signals, "NoPlot" to not save*/));
-		OdeAgent* agent = new OdeAgent(plotoptions);
+		OdeAgent* agent = new OdeAgent(global);
 
 		agent->init(qcontroller, vehicle, wiring);///////////// Initial controller!!!
 		global.agents.push_back(agent);
