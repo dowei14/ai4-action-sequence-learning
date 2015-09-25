@@ -161,6 +161,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			vehicle->addGrippables(grippables);
 			done = false;
 			boxGripped = false;
+			dropStuff = false;
 			testBoxCounter = 0;
 			dropBoxCounter = 0;
 			crossGapCounter = 0;
