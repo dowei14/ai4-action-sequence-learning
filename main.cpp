@@ -281,8 +281,10 @@ public:
 
 	virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control)
 	{
-		std::cout<<globalData.sim_step<<std::endl;
-		if (globalData.sim_step > 300) simulation_time_reached=true;
+		//std::cout<<globalData.sim_step<<std::endl;
+		//if (globalData.sim_step > 300) simulation_time_reached=true;
+		simulation_time_reached = qcontroller->getReset();
+		if (simulation_time_reached == true) qcontroller->setReset(false);
 	}
 
 

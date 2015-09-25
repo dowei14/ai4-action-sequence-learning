@@ -30,6 +30,8 @@ class ASLController : public AbstractController {
     //Define global parameters-begin//
     std::vector<double> parameter;
 
+	// DSW reset variable
+	bool reset;
 
     // DSW
     lpzrobots::FourWheeledRPosGripper* vehicle;
@@ -100,6 +102,15 @@ class ASLController : public AbstractController {
 	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
 	virtual int getState(const sensor* sensors, bool& isGripped, Position pos);
+
+	// DSW return reset variable
+	virtual bool getReset() {
+		return reset;
+	}
+	
+	virtual void setReset(bool input) {
+		reset = input;
+	}
 
     /********* STORABLE INTERFACE ******/
     /// @see Storable

@@ -20,6 +20,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	grippables = grippablesIn;
 	for (int i=0;i<6;i++) irSmooth[i]=0;
 	smoothingFactor = 5.0;
+	reset = false;
 
 	// DSW temp things
 	counter = 0;
@@ -151,7 +152,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 		parameter.at(3) = irSmooth[4];	
 		
 		counter++;			
-		if (state==0) {
+		if (state==0 && reset== false) {
 			vehicle->addGrippables(grippables);
 			done = false;
 			boxGripped = false;
@@ -199,7 +200,8 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			if (!done) done = crossGap(motors, crossGapCounter);
 			else {
 				done = false;
-				state++;
+				state = 0;
+				reset = true;
 			}
 		}
 
