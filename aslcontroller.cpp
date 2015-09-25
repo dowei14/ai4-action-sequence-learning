@@ -9,7 +9,6 @@
  * Dominik Steven Weickgenannt (dowei14@student.sdu.dk 2015/2016)
  */
  
- 
 
 ASLController::ASLController(const std::string& name, const std::string& revision, 
 		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn)
@@ -18,7 +17,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	// DSW
 	vehicle = vehicleIn;
 	grippables = grippablesIn;
-	for (int i=0;i<6;i++) irSmooth[i]=0;
+	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
 	smoothingFactor = 5.0;
 	reset = false;
 
@@ -115,7 +114,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 	calculateAnglePositionFromSensors(sensors);
 			
 	// smooth ir sensors
-	for (int i=0;i<6;i++) irSmooth[i] += (sensors[4+i]-irSmooth[i])/smoothingFactor;
+	for (int i=0;i<number_ir_sensors;i++) irSmooth[i] += (sensors[4+i]-irSmooth[i])/smoothingFactor;
 
 
 //			for (int i=0;i<8;i++) parameter.at(2*i) = distances[i];
@@ -162,6 +161,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			setTarget();
 			state++;
 			smoothingFactor = 1;
+			atEdge = false;
 		} else if (state==1){
 			if(!done) done = goToRandomBox(distances[currentBox],angles[currentBox],motors);
 			else {
@@ -184,7 +184,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				state++;
 			}
 		} else if (state==4){
-			if (!done) done = orientAtEdge(irSmooth[3],irSmooth[2],irSmooth[5],irSmooth[4],motors);
+			if (!done) done = orientAtEdge(irSmooth[3],irSmooth[2],irSmooth[5],irSmooth[4],motors, atEdge);
 			else {				
 				done = false;
 				state++;
@@ -211,9 +211,10 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 *** Q-Learning
 ********************************************************************************************/		
 
-//	std::cout<<std::endl<<getState(sensors, boxGripped, vehicle->getPosition())<<std::endl;
+	std::cout<<std::endl<<getState(sensors, boxGripped, atEdge, vehicle->getPosition())<<std::endl;
 		parameter.at(0) = vehicle->getPosition().x;
 		parameter.at(1) = vehicle->getPosition().y;
+
 /*
       for (int i = 0; i < number_motors; i++){
         motors[i]=0.2;
@@ -303,7 +304,7 @@ bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
 	return done;
 }
 
-bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors){
+bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors, bool& atEdge){
 	bool done = false;
 	double left,right;
 	double threshold = 0.5;
@@ -324,6 +325,7 @@ bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double i
 	} else {//if ( (irLeftLong < threshold) && (irRightLong > threshold) && (irLeftShort < threshold) && (irRightShort > threshold) ){
 		left = 0.0;		right = 0.0;
 		done = true;
+		atEdge = true;
 	}
 	
 	motors[0]=left; motors[2] = left;
@@ -355,7 +357,7 @@ bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 	return done;
 }
 
-int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos){
+int ASLController::getState(const sensor* sensors, bool& isGripped, bool& atEdge, Position pos){
 	double x,y;
 	x=abs(pos.x); y=abs(pos.y);
 	int state =-1;
@@ -370,8 +372,10 @@ int ASLController::getState(const sensor* sensors, bool& isGripped, Position pos
 	}
 
 	if (((x>9) && (x<9.5)) | ((y > 9) && (y < 9.5))) {
-		if (isGripped) state=3;
-		else state=4;
+		if (isGripped) {
+			if (atEdge)	state=4;
+			else state=3;
+		}
 	}
 
 	if ((x>11) | (y > 11)) state =5;

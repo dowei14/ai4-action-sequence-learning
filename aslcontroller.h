@@ -14,6 +14,7 @@
 ***  Parameters
 *********************************************************************/
 	#define number_relative_sensors 8
+	#define number_ir_sensors 6
 
 
 /**
@@ -38,7 +39,7 @@ class ASLController : public AbstractController {
     std::vector<lpzrobots::Primitive*> grippables;
 	double distances [number_relative_sensors];
 	double angles [number_relative_sensors];
-	double irSmooth[6];
+	double irSmooth[number_ir_sensors];
 	double smoothingFactor;
 	// DSW temp stuff for testing
     int counter;
@@ -53,6 +54,7 @@ class ASLController : public AbstractController {
     int testBoxCounter;
     int dropBoxCounter;
 	int crossGapCounter;
+	bool atEdge;
 	
 	double Q[6][6];
 	double reward;
@@ -98,10 +100,10 @@ class ASLController : public AbstractController {
 	virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
 	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
 	virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
-	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors);
+	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors, bool& atEdge);
 	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
-	virtual int getState(const sensor* sensors, bool& isGripped, Position pos);
+	virtual int getState(const sensor* sensors, bool& isGripped, bool& atEdge, Position pos);
 
 	// DSW return reset variable
 	virtual bool getReset() {
