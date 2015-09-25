@@ -227,8 +227,9 @@ public:
     	//setting position and orientation
     	vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 		
-		qcontroller = new ASLController("1","1", vehicle, grippables);
+		qcontroller = new ASLController("1","1");
 //		qcontroller = new FSMController("1","1", vehicle, grippables);
+		qcontroller->setGrippablesAndVehicle(vehicle,grippables);
 		global.configs.push_back(qcontroller);
 
 		// create pointer to one2onewiring
@@ -322,8 +323,8 @@ public:
     	//setting position and orientation
     	vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
 		
-		qcontroller = new ASLController("1","1", vehicle, grippables);
-//		qcontroller = new FSMController("1","1", vehicle, grippables);
+		// only set new grippables otherwise keep old controller
+		qcontroller->setGrippablesAndVehicle(vehicle,grippables);
 		global.configs.push_back(qcontroller);
 
 		// create pointer to one2onewiring

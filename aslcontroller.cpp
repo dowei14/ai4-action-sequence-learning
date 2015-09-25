@@ -10,13 +10,10 @@
  */
  
 
-ASLController::ASLController(const std::string& name, const std::string& revision, 
-		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn)
+ASLController::ASLController(const std::string& name, const std::string& revision)
 	: AbstractController(name, revision){
 
 	// DSW
-	vehicle = vehicleIn;
-	grippables = grippablesIn;
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
 	smoothingFactor = 5.0;
 	reset = false;
@@ -211,18 +208,21 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 *** Q-Learning
 ********************************************************************************************/		
 
-	std::cout<<std::endl<<getState(sensors, boxGripped, atEdge, vehicle->getPosition())<<std::endl;
+//	std::cout<<std::endl<<getState(sensors, boxGripped, atEdge, vehicle->getPosition())<<std::endl;
 		parameter.at(0) = vehicle->getPosition().x;
 		parameter.at(1) = vehicle->getPosition().y;
-
 /*
       for (int i = 0; i < number_motors; i++){
         motors[i]=0.2;
       }	   
 
 
-
-
+	state = getState(sensors, boxGripped, atEdge, vehicle->getPosition());
+	if (state==6) {
+		reward = 1;
+		reset=true;
+	}
+	
 
 
 set reward
@@ -383,6 +383,13 @@ int ASLController::getState(const sensor* sensors, bool& isGripped, bool& atEdge
 	return state;
 }
 
+/*****************************************************************************************
+*** Pass grippables and vehicle after reset
+*****************************************************************************************/
+void ASLController::setGrippablesAndVehicle(lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn){
+	vehicle = vehicleIn;
+	grippables = grippablesIn;
+}
 
 /*****************************************************************************************
 *** Sensor Data => relative angle/distance

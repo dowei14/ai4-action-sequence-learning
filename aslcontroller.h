@@ -62,8 +62,7 @@ class ASLController : public AbstractController {
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
-    ASLController(const std::string& name, const std::string& revision, 
-    		lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn);
+    ASLController(const std::string& name, const std::string& revision);
 
     /** initialization of the controller with the given sensor/ motornumber
       Must be called before use. The random generator is optional.
@@ -90,6 +89,9 @@ class ASLController : public AbstractController {
 
 	// perform one step without learning
     virtual void stepNoLearning(const sensor* , int number_sensors,motor* , int number_motors);
+
+	// pass grippables and vehicle
+	virtual void setGrippablesAndVehicle(lpzrobots::FourWheeledRPosGripper* vehicleIn, std::vector<lpzrobots::Primitive*> grippablesIn);
 
 	// DSW Sensors to angle/distance functions
 	virtual void calculateDistanceToGoals(const sensor* x_);
