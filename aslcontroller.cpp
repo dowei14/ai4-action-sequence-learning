@@ -15,7 +15,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 
 	// DSW
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
-	smoothingFactor = 5.0;
+	smoothingFactor = 1.0;
 	reset = false;
 
 	// DSW temp things
@@ -29,6 +29,14 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 			Q[i_a][i_s] = (double)(rand()%1000)/9000.0;
 		}
 	}
+	learnRate = 0.7;
+	exploreRate = 0.1;
+	discountFactor = 0.9;
+	reward = 0;
+	j_RL = 0;
+	r_RL = 0;
+	a_RL = 0;
+	a1_RL = 0;
 
 	// things for plotting
 	parameter.resize(4);
@@ -157,7 +165,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			crossGapCounter = 0;
 			setTarget();
 			state++;
-			smoothingFactor = 1;
+//			smoothingFactor = 1;
 			atEdge = false;
 		} else if (state==1){
 			if(!done) done = goToRandomBox(distances[currentBox],angles[currentBox],motors);
@@ -222,13 +230,20 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 		reward = 1;
 		reset=true;
 	}
-	
+
+	j_RL = state;
+	r_RL = reward;
+	a1_RL = getMaxAction(j_RL);
+	Q[a_RL][i_RL] = Q[a_RL][i_RL] + LEARN_RATE * (r_RL + discount_factor*Q[a1_RL][j_RL] - Q[a_RL][i_RL]);
+	exploration_activation = (double)(rand()%1000)/1000.0; 
+	if(exploration_activation < EXPLORE_RATE)
+		a_RL = getMaxAction(j_RL); //getMaxAction(j);
+	else {
+		a_RL = (int) (6.0*rand()/(RAND_MAX+1.0)); //between 0-2, 3 actions
+	}
 
 
-set reward
-store previous values
-action selection
-update qtable
+	=> loop for action execution.
 */
 
 
@@ -382,6 +397,20 @@ int ASLController::getState(const sensor* sensors, bool& isGripped, bool& atEdge
 
 	return state;
 }
+
+int ASLController::getMaxAction(int state){
+	// find the largest Q-value for a given state (j), and return action
+	float max = -1000;
+	int action = 0;
+	for(int a=0;a<6;++a) { // Find MAX Q of all actions in this state!
+		if(Q[a][state] > max) {
+		max = Q[a][state];
+		action = a;
+		}
+	}
+	return action;
+}
+
 
 /*****************************************************************************************
 *** Pass grippables and vehicle after reset

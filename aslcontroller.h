@@ -58,6 +58,13 @@ class ASLController : public AbstractController {
 	
 	double Q[6][6];
 	double reward;
+	double learnRate;
+	double exploreRate;
+	double discountFactor;
+	double j_RL;
+	double r_RL;
+	double a_RL;
+	double a1_RL;
    
     //Define global parameters-end//
 
@@ -106,6 +113,7 @@ class ASLController : public AbstractController {
 	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
 	virtual int getState(const sensor* sensors, bool& isGripped, bool& atEdge, Position pos);
+	virtual int getMaxAction(int state);
 
 	// DSW return reset variable
 	virtual bool getReset() {
