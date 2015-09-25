@@ -249,24 +249,101 @@ public:
 	virtual bool restart(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
 	{
 
+		std::cout << "\n begin restart " << currentCycle << "\n";
 
+		std::cout<<"Current Cycle"<<this->currentCycle<<std::endl;
 
+		// remove agents
+		while (global.agents.size() > 0)
+		{
+			OdeAgent* agent = *global.agents.begin();
 
+			AbstractController* controller = agent->getController();
 
+			OdeRobot* robot = agent->getRobot();
+			AbstractWiring* wiring = agent->getWiring();
 
+			global.configs.erase(std::find(global.configs.begin(),
+					global.configs.end(), controller));
 
+			delete robot;
+			delete wiring;
 
+			global.agents.erase(global.agents.begin());
 
+		}
+		// clean the playgrounds
+		while (global.obstacles.size() > 0)
+		{
+			std::vector<AbstractObstacle*>::iterator iter =
+					global.obstacles.begin();
+				delete (*iter);
+			global.obstacles.erase(iter);
+		}
+		boxPrimitives.clear();
+		relative_sensor_obst.clear();
+		grippables.clear();
 
+        ///////////////Recreate Robot Start//////////////////////////////////////////////////////////////////////////////////////
+		/**************************************************************************************************
+		***			Set up Environment
+		**************************************************************************************************/
+		setup_Playground(global);
+	
+		/**************************************************************************************************
+		***			Set up 4 landmark and 1 goal spheres
+		**************************************************************************************************/		
 
+		generate_spheres(global);
 
+		/**************************************************************************************************
+		***			Set up 3 pushable boxes and add the first one as graspable
+		************************************************************************************************/
 
+		generate_boxes(global);
+		grippables.push_back(boxPrimitives[0]);
+//		grippables.push_back(boxPrimitives[1]);
+//		grippables.push_back(boxPrimitives[2]);		
 
-		// places the robot correctly but fucks up sensors figure out whats the heps
+		/**************************************************************************************************
+		***			Set up robot and controller
+		**************************************************************************************************/
 
+		//1) Activate IR sensors
+  		FourWheeledConfGripper fconf = FourWheeledRPosGripper::getDefaultConf();
+
+		///2) relative sensors
+		for (unsigned int i=0; i < relative_sensor_obst.size(); i++){
+			fconf.rpos_sensor_references.push_back(relative_sensor_obst.at(i)->getMainPrimitive());
+		}
+		vehicle = new FourWheeledRPosGripper(odeHandle, osgHandle, fconf);
+
+		/****Initial position of Nimm4******/
     	Pos pos(0.0 , 0.0 , 1.0);
     	//setting position and orientation
-    	global.agents[0]->getRobot()->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
+    	vehicle->place(osg::Matrix::rotate(0, 0, 0, 1) *osg::Matrix::translate(pos));
+		
+		qcontroller = new ASLController("1","1", vehicle, grippables);
+//		qcontroller = new FSMController("1","1", vehicle, grippables);
+		global.configs.push_back(qcontroller);
+
+		// create pointer to one2onewiring
+		AbstractWiring*  wiring = new One2OneWiring(new ColorUniformNoise(0.1));
+
+		// create pointer to agent
+		plotoptions.push_back(PlotOption(NoPlot /*select "File" to save signals, "NoPlot" to not save*/));
+		OdeAgent* agent = new OdeAgent(plotoptions);
+
+		agent->init(qcontroller, vehicle, wiring);///////////// Initial controller!!!
+		global.agents.push_back(agent);
+
+
+		std::cout << "\n end restart " << currentCycle << "\n";
+		// restart!
+
+		qcontroller->setReset(false);
+
+
 		return true;
 
 	}
@@ -284,7 +361,6 @@ public:
 		//std::cout<<globalData.sim_step<<std::endl;
 		//if (globalData.sim_step > 300) simulation_time_reached=true;
 		simulation_time_reached = qcontroller->getReset();
-		if (simulation_time_reached == true) qcontroller->setReset(false);
 	}
 
 
