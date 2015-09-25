@@ -34,6 +34,9 @@ class ASLController : public AbstractController {
 	// DSW reset variable
 	bool reset;
 
+	// DSW removeTmpObjects for gripper removal in callback
+	bool dropStuff;
+
     // DSW
     lpzrobots::FourWheeledRPosGripper* vehicle;
     std::vector<lpzrobots::Primitive*> grippables;
@@ -110,7 +113,7 @@ class ASLController : public AbstractController {
 	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
 	virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
 	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors, bool& atEdge);
-	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped);
+	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& dropStuff, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
 	virtual int getState(const sensor* sensors, bool& isGripped, bool& atEdge, Position pos);
 	virtual int getMaxAction(int state);
@@ -120,6 +123,11 @@ class ASLController : public AbstractController {
 		return reset;
 	}
 	
+	virtual bool getDrop(){
+		return dropStuff;
+	}	
+
+
 	virtual void setReset(bool input) {
 		reset = input;
 	}

@@ -360,6 +360,7 @@ public:
 		//std::cout<<globalData.sim_step<<std::endl;
 		//if (globalData.sim_step > 300) simulation_time_reached=true;
 		simulation_time_reached = qcontroller->getReset();
+		if (qcontroller->getDrop()) globalData.removeExpiredObjects(10000);
 	}
 
 

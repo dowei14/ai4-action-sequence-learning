@@ -17,6 +17,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
 	smoothingFactor = 1.0;
 	reset = false;
+	dropStuff = false;
 
 	// DSW temp things
 	counter = 0;
@@ -193,10 +194,9 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			else {				
 				done = false;
 				state++;
-				dropBoxCounter = counter;
 			}
 		} else if (state==5){
-			if (!done) done = dropBox(vehicle, dropBoxCounter, boxGripped);
+			if (!done) done = dropBox(vehicle, dropBoxCounter, dropStuff, boxGripped);
 			else {
 				done = false;
 				state++;
@@ -348,13 +348,16 @@ bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double i
 	return done;
 }
 
-bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& isGripped){
+bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& dropStuff, bool& isGripped){
 	bool done = false;
 	vehicle->removeGrippables(grippables);
 	dropBoxCounter++;
-	if (dropBoxCounter > 3500) {
-		done = true;
+	if (dropBoxCounter >50) {
+		dropStuff = true;		
 		isGripped = false;
+	}
+	if (dropBoxCounter >100) {
+		done = true;
 	}
 	return done;
 }
