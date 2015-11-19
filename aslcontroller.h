@@ -8,6 +8,8 @@
 // DSW
 #include <fourwheeledrpos_gripper.h>
 #include <cmath> //pow sqrt
+#include <vector>
+#include <fstream>
 
 
 /*********************************************************************
@@ -51,6 +53,7 @@ class ASLController : public AbstractController {
     
     // DSW Q-Learning
     bool done;
+    bool haveTarget;
     int currentBox;
     int state;
     bool boxGripped;
@@ -58,17 +61,22 @@ class ASLController : public AbstractController {
     int dropBoxCounter;
 	int crossGapCounter;
 	bool atEdge;
+	bool atBox;
+	bool nearEdge;
+	double prevMotorLeft;
+	double prevMotorRight;
+	double motorLeft;
+	double motorRight;
+	bool getTargetAction;
+	int prevState;
+	std::ofstream inRNN;
+	std::ofstream outRNN;
+	std::ofstream inCSMTL;
+	std::ofstream outCSMTL;
+	int runNumber;
+	double distanceCurrentBox, angleCurrentBox;
+	double irLeftLong, irRightLong, irLeftShort, irRightShort;
 	
-	double Q[6][6];
-	double reward;
-	double learnRate;
-	double exploreRate;
-	double discountFactor;
-	double j_RL;
-	double r_RL;
-	double a_RL;
-	double a1_RL;
-   
     //Define global parameters-end//
 
     /// contructor (hint: use $ID$ for revision)
@@ -108,15 +116,13 @@ class ASLController : public AbstractController {
 	virtual void calculateAnglePositionFromSensors(const sensor* x_);
 		
 	// Q-Learning
-	virtual void setTarget();
+	virtual void setTarget(bool& haveTarget);
 	virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
 	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);
 	virtual bool moveToEdge(double irLeft, double irRight, motor* motors);
 	virtual bool orientAtEdge(double irLeftLong, double irRightLong, double irLeftShort, double irRightShort, motor* motors, bool& atEdge);
 	virtual bool dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& dropStuff, bool& isGripped);
 	virtual bool crossGap(motor* motors, int& crossGapCounter);
-	virtual int getState(const sensor* sensors, bool& isGripped, bool& atEdge, Position pos);
-	virtual int getMaxAction(int state);
 
 	// DSW return reset variable
 	virtual bool getReset() {
@@ -144,6 +150,10 @@ class ASLController : public AbstractController {
       Configurable::parse(f);
       return true;
     }
+    
+    // store Data for learning
+    virtual void store();
+    virtual void storeBySkillCSMTL();
 
   protected:
 
