@@ -40,3 +40,4 @@ start
 *.cfg
 *.depend
 .gitignore~
+*.msg

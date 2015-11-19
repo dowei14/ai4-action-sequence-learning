@@ -176,26 +176,26 @@ namespace lpzrobots {
 			gripperArmTrans1 = new Transform(objects[0],gripperArm1, Matrix::translate(0,0,0.25) * Matrix::rotate(M_PI/4,Vec3(0,1,0)));
 			gripperArmTrans1->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
 			
-			gripperArm2 = new Box(0.1 , 0.445, 0.5);
+			gripperArm2 = new Box(0.1 , 0.695, 0.5);
 			gripperArm2->setTexture("Images/wood.rgb");		
 			gripperArm2->setSubstance(Substance(5.0,10.0,99.0,1.0));
-			gripperArmTrans2 = new Transform(objects[0],gripperArm2, Matrix::translate(0.35,-0.225,0.55));
+			gripperArmTrans2 = new Transform(objects[0],gripperArm2, Matrix::translate(0.35,-0.35,0.55));
 			gripperArmTrans2->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
 			
-			gripperArm3 = new Box(0.1 , 0.445, 0.5);
+			gripperArm3 = new Box(0.1 , 0.695, 0.5);
 			gripperArm3->setTexture("Images/wood.rgb");
 			gripperArm3->setSubstance(Substance(5.0,10.0,99.0,1.0));		
-			gripperArmTrans3 = new Transform(objects[0],gripperArm3, Matrix::translate(0.35,0.225,0.55));
+			gripperArmTrans3 = new Transform(objects[0],gripperArm3, Matrix::translate(0.35,0.35,0.55));
 			gripperArmTrans3->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
 			
 			gripperArm4 = new Box(0.1 , 0.1, 0.6);
 			gripperArm4->setTexture("Images/wood.rgb");		
-			gripperArmTrans4 = new Transform(objects[0],gripperArm4, Matrix::translate(0.35,0.23,0.9) * Matrix::rotate(-M_PI/10,Vec3(1,0,0)));
+			gripperArmTrans4 = new Transform(objects[0],gripperArm4, Matrix::translate(0.35,0.475,0.9) * Matrix::rotate(-M_PI/10,Vec3(1,0,0)));
 			gripperArmTrans4->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
 			
 			gripperArm5 = new Box(0.1 , 0.1, 0.6);
 			gripperArm5->setTexture("Images/wood.rgb");		
-			gripperArmTrans5 = new Transform(objects[0],gripperArm5, Matrix::translate(0.35,-0.23,0.9) * Matrix::rotate(M_PI/10,Vec3(1,0,0)));
+			gripperArmTrans5 = new Transform(objects[0],gripperArm5, Matrix::translate(0.35,-0.475,0.9) * Matrix::rotate(M_PI/10,Vec3(1,0,0)));
 			gripperArmTrans5->init(odeHandle, 0, osgHandle.changeColor(Color(2, 156/255.0, 0, 1.0f)));
 			
 			gripperArmGrip = new Box(0.1 , 0.01, 0.5);
@@ -232,7 +232,7 @@ namespace lpzrobots {
 		for(int i=-1; i<2; i+=2){ //for(int i=-1; i<2; i+=2){ 
 			IRSensor* sensor = new IRSensor();
 			irSensorBank.registerSensor(sensor, objects[0],
-			  Matrix::rotate(-M_PI/8, Vec3(0,1,0)) * // DSW pointing downwards
+			  //Matrix::rotate(-M_PI/8, Vec3(0,1,0)) * // DSW pointing downwards
 			  Matrix::rotate(i*M_PI/10, Vec3(1,0,0)) *
 			  Matrix::translate(0,-i*width/10,length/2 + width/2 - width/60 ),
 			  conf.irRangeFront, RaySensor::drawAll);

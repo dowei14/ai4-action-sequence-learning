@@ -46,12 +46,8 @@ class ASLController : public AbstractController {
 	double angles [number_relative_sensors];
 	double irSmooth[number_ir_sensors];
 	double smoothingFactor;
-	// DSW temp stuff for testing
-    int counter;
-    double speed;
-    double left,right;
     
-    // DSW Q-Learning
+    // TODO: remove these, artifacts from previous iterations
     bool done;
     bool haveTarget;
     int currentBox;
@@ -63,19 +59,29 @@ class ASLController : public AbstractController {
 	bool atEdge;
 	bool atBox;
 	bool nearEdge;
+
+	// for training
 	double prevMotorLeft;
 	double prevMotorRight;
 	double motorLeft;
 	double motorRight;
 	bool getTargetAction;
 	int prevState;
+	// files for storing
 	std::ofstream inRNN;
 	std::ofstream outRNN;
 	std::ofstream inCSMTL;
 	std::ofstream outCSMTL;
 	int runNumber;
+
+	// sensor values
 	double distanceCurrentBox, angleCurrentBox;
 	double irLeftLong, irRightLong, irLeftShort, irRightShort;
+	double irFrontLeft,irFrontRight;
+	// parameters
+	double boxTouching;
+	double irFloorDistance;
+	double irFrontClearDistance;
 	
     //Define global parameters-end//
 
@@ -115,7 +121,8 @@ class ASLController : public AbstractController {
 	virtual void calculateDistanceToGoals(const sensor* x_);
 	virtual void calculateAnglePositionFromSensors(const sensor* x_);
 		
-	// Q-Learning
+	// Actions
+	// TODO: Make them void functions
 	virtual void setTarget(bool& haveTarget);
 	virtual bool goToRandomBox(double boxDistance, double boxAngle, motor* motors);
 	virtual bool testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped);

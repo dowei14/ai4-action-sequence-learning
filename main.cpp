@@ -93,8 +93,8 @@ public:
 	// generate 3 goal boxes return Primitives(vector of Primitive*) of boxes to add to grippables
 	void generate_boxes(GlobalData& global)
 	{
-		double length = 0.88;
-		double width = 0.88;
+		double length = 1.38;
+		double width = 1.38;
 		double height = 0.9;
 		Substance material(5.0,10.0,99.0,1.0);
 		double mass = 0.1;
@@ -133,9 +133,10 @@ public:
 	// set up Playground
 	void setup_Playground(GlobalData& global)
 	{
+
 		// inner Platform
 		double length_pg = 0.0;
-		double width_pg = 10.0;
+		double width_pg = 9.5;
 		double height_pg = 1.0;
 		
 		Playground* playground = new Playground(odeHandle, osgHandle.changeColor(Color(0.6,0.0,0.6)),
@@ -193,7 +194,8 @@ public:
 		**************************************************************************************************/
 		
 		setup_Playground(global);
-	
+		Substance material(5.0,10.0,99.0,1.0);
+		this->setGroundSubstance(material);
 		/**************************************************************************************************
 		***			Set up 4 landmark and 1 goal spheres
 		**************************************************************************************************/		

@@ -1,5 +1,5 @@
 #rm *.txt
 #rm *.o
-#rm start
+rm start
 make
 ./start #-g 1

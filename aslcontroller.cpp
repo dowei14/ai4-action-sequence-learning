@@ -15,13 +15,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 
 	// DSW
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
-	smoothingFactor = 1.0;
 
-	currentBox = 0;
-	prevMotorLeft = 0;
-	prevMotorRight = 0;
-	runNumber = 0;
-	state = 0;
 	testBoxCounter = 0;
 	dropBoxCounter = 0;
 	crossGapCounter = 0;
@@ -31,18 +25,27 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	reset = false;
 	dropStuff = false;
 	
-
-	// DSW temp things
-	counter = 0;
-	speed = 1.0;
-	
+	// parameters
+	boxTouching = 0.00115;
+	irFloorDistance = 0.5;
+	irFrontClearDistance = 0.8;
+	smoothingFactor = 1.0;
+	state = 0;
+	runNumber = 0;
+	currentBox = 0;
+	prevMotorLeft = 0;
+	prevMotorRight = 0;
 
 	// things for plotting
-	parameter.resize(4);
+	parameter.resize(8);
 	addInspectableValue("parameter1", &parameter.at(0),"parameter1");
 	addInspectableValue("parameter2", &parameter.at(1),"parameter2");
 	addInspectableValue("parameter3", &parameter.at(2),"parameter3");
 	addInspectableValue("parameter4", &parameter.at(3),"parameter4");
+	addInspectableValue("parameter5", &parameter.at(4),"parameter5");
+	addInspectableValue("parameter6", &parameter.at(5),"parameter6");
+	addInspectableValue("parameter7", &parameter.at(6),"parameter7");
+	addInspectableValue("parameter8", &parameter.at(7),"parameter8");	
 
 
 }
@@ -117,24 +120,31 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 	prevMotorLeft = motors[0];
 	prevMotorRight = motors[1];
 	prevState = state;
+	
 /********************************************************************************************
 *** FSM
 ********************************************************************************************/
 
 
 
-	counter++;
 	distanceCurrentBox = distances[currentBox];
 	angleCurrentBox = angles[currentBox];
 	irLeftLong = irSmooth[3];
 	irRightLong = irSmooth[2];
 	irLeftShort = irSmooth[5];
 	irRightShort = irSmooth[4];
+	irFrontLeft = irSmooth[1];
+	irFrontRight = irSmooth[0];
 	
 	parameter.at(0) = irLeftLong;
 	parameter.at(1) = irRightLong;
 	parameter.at(2) = irLeftShort;
 	parameter.at(3) = irRightShort;	
+	parameter.at(4) = irFrontLeft;
+	parameter.at(5) = irFrontRight;	
+	parameter.at(6) = distanceCurrentBox;	
+	parameter.at(7) = angleCurrentBox;			
+
 
 	if (reset){		
 		haveTarget = false;
@@ -149,7 +159,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 		if (state==0) {
 			if (haveTarget)	state++;
 		} else if (state==1){
-			if (distances[currentBox] <= 0.0008 ){
+			if (distanceCurrentBox <= boxTouching ){
 				state++;
 			}
 		} else if (state==2){
@@ -157,7 +167,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				testBoxCounter++;
 			else {
 				testBoxCounter = 0;
-				if (distanceCurrentBox > 0.0008) {
+				if (distanceCurrentBox > boxTouching) {
 					boxGripped = false; // not being used
 					haveTarget = 0;
 					state = 0;
@@ -167,22 +177,20 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				}
 			}
 		} else if (state ==3){
-			if (irLeftLong < 0.6 || irRightLong < 0.6) state++;
+			if (irLeftLong < irFloorDistance || irRightLong < irFloorDistance) state++;
 		} else if (state ==4){
-			if ((irLeftLong < 0.5) && (irRightLong < 0.5) && ((irLeftShort > 0.5) || (irRightShort > 0.5))) {
+			if ((irLeftLong < irFloorDistance) && (irRightLong < irFloorDistance) && ((irLeftShort > irFloorDistance) || (irRightShort > irFloorDistance))) {
 				state++;
 				motors[0]=0.0; motors[2] = 0.0;
 				motors[1]=0.0; motors[3] = 0.0;
 			}
 		} else if (state ==5){
-			if (dropBoxCounter < 1000) dropBoxCounter++;
-			else{		
+			if (irFrontLeft < irFrontClearDistance){		
 				boxGripped = false;
 				state++;
 			}
 		} else if (state ==6){
-			if (crossGapCounter < 500) crossGapCounter++;	
-			else {
+			if (irFrontLeft > irFrontClearDistance){
 				state++;
 			}
 		} else {		
@@ -211,75 +219,11 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 		}
 	}
 		
-	//std::cout<<state<<std::endl;
-/*			
-		if (state==0 && reset== false) {
-			vehicle->addGrippables(grippables);
-			done = false;
-			boxGripped = false;
-			dropStuff = false;
-			testBoxCounter = 0;
-			dropBoxCounter = 0;
-			crossGapCounter = 0;			
-			atEdge = false;
-			nearEdge = false;
-		} else if (state==1){
-			if(!done) done = goToRandomBox(distances[currentBox],angles[currentBox],motors);
-			else {
-				state++;
-				done = false;
-			}
-		} else if (state==2){
-			if (!done) done = testBox(distances[currentBox],motors,testBoxCounter, boxGripped);
-			else {
-				done = false;
-				if (boxGripped) {
-					state++;
-					counter = 0;
-				}else {
-					state=0;
-				}
-			}
-		} else if (state==3){
-			if (!done) done = moveToEdge(irSmooth[3],irSmooth[2],motors);
-			else {
-				done = false;
-				state++;
-				nearEdge = true;
-			}
-		} else if (state==4){
-			if (!done) done = orientAtEdge(irSmooth[3],irSmooth[2],irSmooth[5],irSmooth[4],motors, atEdge);
-			else {				
-				done = false;
-				state++;
-				nearEdge = false;
-			}
-		} else if (state==5){
-			if (!done) done = dropBox(vehicle, dropBoxCounter, dropStuff, boxGripped);
-			else {
-				done = false;
-				state++;
-			}
-		} else if (state==6){
-			if (!done) done = crossGap(motors, crossGapCounter);
-			else {
-				done = false;
-				state = 0;
-				reset = true;
-				runNumber++;
-			}
-		}
-
-*/
-		
 		motorLeft = motors[0]; motorRight = motors[1];
 		if (!reset) {
 			//store();
 			storeBySkillCSMTL();
 		}
-
-
-
 
 
 		
@@ -305,15 +249,8 @@ bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* mo
 {
 	double left,right;
 	bool done = false;
-//	if (boxDistance > 0.0008 ){
-		left = 0.5 + boxAngle;
-		right = 0.5 - boxAngle;
-//		finished = false;
-//	} else{
-//		left = 0.0;
-//		right = 0.0;
-//		finished =true;
-//	}	
+	left = 0.5 + boxAngle;
+	right = 0.5 - boxAngle;
 	motors[0]=left; motors[2] = left;
 	motors[1]=right; motors[3] = right;
 	return done;
@@ -322,16 +259,7 @@ bool ASLController::goToRandomBox(double boxDistance, double boxAngle, motor* mo
 bool ASLController::testBox(double boxDistance, motor* motors, int& testBoxCounter, bool& isGripped){
 	double speed;
 	bool done = false;
-//	if (testBoxCounter < 100){
-		speed = -0.5;
-//		testBoxCounter++;
-//		done = false;
-//	} else {
-//		if (boxDistance > 0.0008) isGripped = false;
-//		else isGripped = true;
-//		done = true;
-//		speed = 0.0;
-//	}
+	speed = -0.5;
 	motors[0]=speed; motors[2] = speed;
 	motors[1]=speed; motors[3] = speed;
 	return done;
@@ -341,13 +269,8 @@ bool ASLController::moveToEdge(double irLeft, double irRight, motor* motors){
 	bool done = false;
 	double left,right;
 	
-//	if (irLeft > 0.6 && irRight > 0.6){
-		left = 0.3; right = 0.3;
-//	} else {
-//		left = 0.0;	right = 0.0;
-//		done = true;
-//	}
-	
+	left = 0.3; right = 0.3;
+
 	motors[0]=left; motors[2] = left;
 	motors[1]=right; motors[3] = right;
 	return done;
@@ -372,13 +295,7 @@ bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double i
 	} else if ( (irLeftLong > threshold) && (irRightLong < threshold) && (irLeftShort > threshold) && (irRightShort > threshold)){
 		left = speed;	right = -speed/2; // turn right with slower back movement
 	} 
-/*	else if ( (irLeftLong < threshold) && (irRightLong < threshold) ){
-		if (!atEdge) std::cout<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<std::endl;
-		left = 0.0;		right = 0.0;
-		done = true;
-		atEdge = true;
-	}
-*/	
+
 	motors[0]=left; motors[2] = left;
 	motors[1]=right; motors[3] = right;
 	return done;
@@ -387,29 +304,19 @@ bool ASLController::orientAtEdge(double irLeftLong, double irRightLong, double i
 bool ASLController::dropBox(lpzrobots::FourWheeledRPosGripper* vehicle, int& dropBoxCounter, bool& dropStuff, bool& isGripped){
 	bool done = false;	
 
-	vehicle->removeGrippables(grippables);
-	dropStuff = true;
-/*	dropBoxCounter++;
-	if (dropBoxCounter >50) {
-		dropStuff = true;		
-		isGripped = false;
+	// the counter is for the robot to stop moving before dropping, otherwise it will fuck up from time to time
+	// TODO: replace this with a "sensor based option"
+	dropBoxCounter++;
+	if (dropBoxCounter > 50) {
+		dropStuff = true;
+		vehicle->removeGrippables(grippables);
 	}
-	if (dropBoxCounter >100) {
-		done = true;
-	}
-*/	
 	return done;
 }
 
 bool ASLController::crossGap(motor* motors, int& crossGapCounter){
 	bool done = false;
-	speed = 0.5;
-/*	crossGapCounter++;
-	if (crossGapCounter > 500) {
-		done = true;
-		speed = 0.0;
-	}
-*/	
+	double speed = 0.5;
 	motors[0]=speed; motors[2] = speed;
 	motors[1]=speed; motors[3] = speed;
 	return done;
@@ -458,6 +365,7 @@ void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
 	}
 }
 
+// TODO: this needs to be updated to fit with the new inputs and outputs
 void ASLController::store(){
 	std::string inRNNname = "../data/inRNN" + std::to_string(runNumber) + ".txt";
 	inRNN.open (inRNNname.c_str(), ios::app);
@@ -522,7 +430,7 @@ void ASLController::store(){
 	outCSMTL.close();
 }
 
-
+// TODO: Updated to implement new output(getTargetAction) and new inputs(sensor values)
 void ASLController::storeBySkillCSMTL(){
 	
 	std::string inCSMTLname = "../data/stateIn" + std::to_string(state) + ".txt";
