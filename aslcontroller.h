@@ -60,11 +60,13 @@ class ASLController : public AbstractController {
 	bool atBox;
 	bool nearEdge;
 
+
 	// for training
 	double prevMotorLeft;
 	double prevMotorRight;
 	double motorLeft;
 	double motorRight;
+	bool prevhaveTarget;
 	bool getTargetAction;
 	int prevState;
 	// files for storing
@@ -73,7 +75,8 @@ class ASLController : public AbstractController {
 	std::ofstream inCSMTL;
 	std::ofstream outCSMTL;
 	int runNumber;
-
+	int counter;
+	
 	// sensor values
 	double distanceCurrentBox, angleCurrentBox;
 	double irLeftLong, irRightLong, irLeftShort, irRightShort;

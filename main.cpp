@@ -175,6 +175,7 @@ public:
 		**************************************************************************************************/
 		//setCameraHomePos(Pos(0, 40, 10),  Pos(0, 0, 0)); // viewing full scene from side
 		setCameraHomePos(Pos(0, 5, 5),  Pos(0, 0, 0));
+		//setCameraHomePos(Pos(0, 20, 20),  Pos(0, 0, 0));
 
 		/**************************************************************************************************
 		***			Simulation Parameters
@@ -200,7 +201,8 @@ public:
 		***			Set up 4 landmark and 1 goal spheres
 		**************************************************************************************************/		
 
-		generate_spheres(global);
+		// not being used atm
+		//generate_spheres(global);
 
 		/**************************************************************************************************
 		***			Set up 3 pushable boxes and add the first one as graspable
@@ -362,7 +364,7 @@ public:
 		//std::cout<<globalData.sim_step<<std::endl;
 		//if (globalData.sim_step > 300) simulation_time_reached=true;
 		simulation_time_reached = qcontroller->getReset();
-		if (qcontroller->getDrop()) globalData.removeExpiredObjects(10000);
+		if (qcontroller->getDrop()) globalData.removeExpiredObjects(99999999);
 	}
 
 

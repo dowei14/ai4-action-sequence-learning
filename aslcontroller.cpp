@@ -16,15 +16,19 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	// DSW
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i]=0;
 
+
+		
 	testBoxCounter = 0;
 	dropBoxCounter = 0;
 	crossGapCounter = 0;
 	atEdge = false;
 	haveTarget = false;
+	prevhaveTarget = false;
+	boxGripped = false;
+	dropStuff = false;
 	done = false;
 	reset = false;
-	dropStuff = false;
-	
+	counter = 0;
 	// parameters
 	boxTouching = 0.00115;
 	irFloorDistance = 0.5;
@@ -32,7 +36,7 @@ ASLController::ASLController(const std::string& name, const std::string& revisio
 	smoothingFactor = 1.0;
 	state = 0;
 	runNumber = 0;
-	currentBox = 0;
+	currentBox = 5;
 	prevMotorLeft = 0;
 	prevMotorRight = 0;
 
@@ -101,7 +105,9 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 	// 31-33 : Box 3			(7)
       
 	/*****************************************************************************************/
-
+	// add grippables
+	vehicle->addGrippables(grippables);
+	
 	// calculate relative distances and angles from sensor value, normalized to 0..1 for distance and -1..1 for angle
 	calculateDistanceToGoals(sensors);
 	calculateAnglePositionFromSensors(sensors);
@@ -109,8 +115,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 	// smooth ir sensors
 	for (int i=0;i<number_ir_sensors;i++) irSmooth[i] += (sensors[4+i]-irSmooth[i])/smoothingFactor;
 
-	// add grippables
-	vehicle->addGrippables(grippables);
+
 
 
 /********************************************************************************************
@@ -120,6 +125,7 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 	prevMotorLeft = motors[0];
 	prevMotorRight = motors[1];
 	prevState = state;
+	prevhaveTarget = haveTarget;
 	
 /********************************************************************************************
 *** FSM
@@ -148,16 +154,18 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 
 	if (reset){		
 		haveTarget = false;
+		prevhaveTarget = false;
 		boxGripped = false;
 		dropStuff = false;
 		testBoxCounter = 0;
 		dropBoxCounter = 0;
 		crossGapCounter = 0;
 		state = 0;
-	} else {
+		counter =0;
+	} else if (counter > 1) {
 		// determine new state
 		if (state==0) {
-			if (haveTarget)	state++;
+			if (prevhaveTarget)	state++;
 		} else if (state==1){
 			if (distanceCurrentBox <= boxTouching ){
 				state++;
@@ -169,11 +177,13 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 				testBoxCounter = 0;
 				if (distanceCurrentBox > boxTouching) {
 					boxGripped = false; // not being used
-					haveTarget = 0;
+					haveTarget = false;
+					prevhaveTarget = false;
 					state = 0;
 				} else {
 					boxGripped = true; // not being used
 					state++;
+//					state=7;
 				}
 			}
 		} else if (state ==3){
@@ -218,13 +228,18 @@ void ASLController::step(const sensor* sensors, int sensornumber,
 			crossGap(motors, crossGapCounter);
 		}
 	}
+	for (int i=0;i<4;i++){
+	if (motors[i]>1.0) motors[i]=1.0;
+	if (motors[i]<-1.0) motors[i]=-1.0;
+	
+	}
 		
-		motorLeft = motors[0]; motorRight = motors[1];
-		if (!reset) {
-			//store();
-			storeBySkillCSMTL();
-		}
-
+	motorLeft = motors[0]; motorRight = motors[1];
+	if (!reset && runNumber>0 && counter>1) {
+		store();
+		//storeBySkillCSMTL();
+	}
+	counter++;
 
 		
 };
@@ -365,18 +380,19 @@ void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
 	}
 }
 
-// TODO: this needs to be updated to fit with the new inputs and outputs
 void ASLController::store(){
-	std::string inRNNname = "../data/inRNN" + std::to_string(runNumber) + ".txt";
+//	std::string inRNNname = "../data/inRNN" + std::to_string(runNumber) + ".txt";
+	std::string inRNNname = "../data/inRNN.txt";
 	inRNN.open (inRNNname.c_str(), ios::app);
 	inRNN.precision(5);
 	inRNN<<fixed;
 	
-	std::string outRNNname = "../data/outRNN" + std::to_string(runNumber) + ".txt";
+//	std::string outRNNname = "../data/outRNN" + std::to_string(runNumber) + ".txt";
+	std::string outRNNname = "../data/outRNN.txt";	
 	outRNN.open (outRNNname.c_str(), ios::app);
 	outRNN.precision(5);
 	outRNN<<fixed;
-	
+/*	
 	std::string inCSMTLname = "../data/inCSMTL" + std::to_string(runNumber) + ".txt";
 	inCSMTL.open (inCSMTLname.c_str(), ios::app);
 	inCSMTL.precision(5);
@@ -386,43 +402,52 @@ void ASLController::store(){
 	outCSMTL.open (outCSMTLname.c_str(), ios::app);
 	outCSMTL.precision(5);
 	outCSMTL<<fixed;
-	
+*/
 	for (int i=0;i<7;i++){
+//	for (int i=0;i<3;i++){
 		if (i == prevState)	inRNN<<"1";
 		else inRNN<<"0";
-		if (i<6) inRNN<<" ";
-
+		inRNN<<" ";
 		
 		if (i == state)	outRNN<<"1";
 		else outRNN<<"0";
 		if (i<6) outRNN<<" ";
 		if (i==6) outRNN<<"\n";
+//		if (i<2) outRNN<<" ";
+//		if (i==2) outRNN<<"\n";
+
 		
-		if (i == state)	inCSMTL<<"1";
-		else inCSMTL<<"0";
-		if (i<6) inCSMTL<<" ";
+//		if (i == state)	inCSMTL<<"1";
+//		else inCSMTL<<"0";
+//		if (i<6) inCSMTL<<" ";
 	}
-	inRNN<<" ";
+	
+
 	inRNN<<prevMotorLeft<<" "<<prevMotorRight;	
 	inRNN<<" ";
-	inRNN<<distances[currentBox]<<" "<<angles[currentBox];
+	inRNN<<distanceCurrentBox<<" "<<angleCurrentBox;
 	inRNN<<" ";
-	inRNN<<irSmooth[2]<<" "<<irSmooth[3]<<" "<<irSmooth[4]<<" "<<irSmooth[5];
+	inRNN<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
+	inRNN<<" ";
+	if (prevhaveTarget) inRNN<<"1";
+	else inRNN<<"0";
 	inRNN<<"\n";
-	
+/*	
 	inCSMTL<<" ";
 	inCSMTL<<prevMotorLeft<<" "<<prevMotorRight;	
 	inCSMTL<<" ";
-	inCSMTL<<distances[currentBox]<<" "<<angles[currentBox];
+	inCSMTL<<distanceCurrentBox<<" "<<angleCurrentBox;
 	inCSMTL<<" ";
-	inCSMTL<<irSmooth[2]<<" "<<irSmooth[3]<<" "<<irSmooth[4]<<" "<<irSmooth[5];
+	inCSMTL<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
 	inCSMTL<<"\n";
+	if (prevhaveTarget) inCSMTL<<"1";
+	else inCSMTL<<"0";
 	
 	outCSMTL<<motorLeft<<" "<<motorRight;
 	if (getTargetAction) outCSMTL<<" "<<"1";
 	else outCSMTL<<" "<<"0";
 	outCSMTL<<"\n";
-	
+*/	
 	
   	inRNN.close();  	
 	outRNN.close();
@@ -430,7 +455,6 @@ void ASLController::store(){
 	outCSMTL.close();
 }
 
-// TODO: Updated to implement new output(getTargetAction) and new inputs(sensor values)
 void ASLController::storeBySkillCSMTL(){
 	
 	std::string inCSMTLname = "../data/stateIn" + std::to_string(state) + ".txt";
@@ -449,14 +473,17 @@ void ASLController::storeBySkillCSMTL(){
 		else inCSMTL<<"0";
 		if (i<6) inCSMTL<<" ";
 	}
-	
+
+
 	inCSMTL<<" ";
 	inCSMTL<<prevMotorLeft<<" "<<prevMotorRight;	
 	inCSMTL<<" ";
-	inCSMTL<<distances[currentBox]<<" "<<angles[currentBox];
+	inCSMTL<<distanceCurrentBox<<" "<<angleCurrentBox;
 	inCSMTL<<" ";
-	inCSMTL<<irSmooth[2]<<" "<<irSmooth[3]<<" "<<irSmooth[4]<<" "<<irSmooth[5];
+	inCSMTL<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
 	inCSMTL<<"\n";
+	if (prevhaveTarget) inCSMTL<<"1";
+	else inCSMTL<<"0";
 	
 	outCSMTL<<motorLeft<<" "<<motorRight;
 	if (getTargetAction) outCSMTL<<" "<<"1";
