@@ -382,10 +382,15 @@ void ASLController::calculateAnglePositionFromSensors(const sensor* x_)
 
 void ASLController::store(){
 //	std::string inRNNname = "../data/inRNN" + std::to_string(runNumber) + ".txt";
-	std::string inRNNname = "../data/inRNN.txt";
+	std::string inRNNname = "../data/inRNN_18.txt";
 	inRNN.open (inRNNname.c_str(), ios::app);
 	inRNN.precision(5);
 	inRNN<<fixed;
+	
+	std::string inRNNname2 = "../data/inRNN_11.txt";
+	inRNN2.open (inRNNname2.c_str(), ios::app);
+	inRNN2.precision(5);
+	inRNN2<<fixed;
 	
 //	std::string outRNNname = "../data/outRNN" + std::to_string(runNumber) + ".txt";
 	std::string outRNNname = "../data/outRNN.txt";	
@@ -403,35 +408,49 @@ void ASLController::store(){
 	outCSMTL.precision(5);
 	outCSMTL<<fixed;
 */
-	for (int i=0;i<7;i++){
-//	for (int i=0;i<3;i++){
-		if (i == prevState)	inRNN<<"1";
-		else inRNN<<"0";
-		inRNN<<" ";
+	int repetitions = 1;
+	if (prevState != state) repetitions= 100;
+	for (int a=0;a<repetitions;a++){
+		for (int i=0;i<7;i++){
+	//	for (int i=0;i<3;i++){
+			if (i == prevState)	inRNN<<"1";
+			else inRNN<<"0";
+			inRNN<<" ";
 		
-		if (i == state)	outRNN<<"1";
-		else outRNN<<"0";
-		if (i<6) outRNN<<" ";
-		if (i==6) outRNN<<"\n";
-//		if (i<2) outRNN<<" ";
-//		if (i==2) outRNN<<"\n";
+			if (i == state)	outRNN<<"1";
+			else outRNN<<"0";
+			if (i<6) outRNN<<" ";
+			if (i==6) outRNN<<"\n";
+	//		if (i<2) outRNN<<" ";
+	//		if (i==2) outRNN<<"\n";
 
 		
-//		if (i == state)	inCSMTL<<"1";
-//		else inCSMTL<<"0";
-//		if (i<6) inCSMTL<<" ";
-	}
+	//		if (i == state)	inCSMTL<<"1";
+	//		else inCSMTL<<"0";
+	//		if (i<6) inCSMTL<<" ";
+		}
 	
 
-	inRNN<<prevMotorLeft<<" "<<prevMotorRight;	
-	inRNN<<" ";
-	inRNN<<distanceCurrentBox<<" "<<angleCurrentBox;
-	inRNN<<" ";
-	inRNN<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
-	inRNN<<" ";
-	if (prevhaveTarget) inRNN<<"1";
-	else inRNN<<"0";
-	inRNN<<"\n";
+		inRNN<<prevMotorLeft<<" "<<prevMotorRight;	
+		inRNN<<" ";
+		inRNN<<distanceCurrentBox<<" "<<angleCurrentBox;
+		inRNN<<" ";
+		inRNN<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
+		inRNN<<" ";
+		if (prevhaveTarget) inRNN<<"1";
+		else inRNN<<"0";
+		inRNN<<"\n";
+	
+		inRNN2<<prevMotorLeft<<" "<<prevMotorRight;	
+		inRNN2<<" ";
+		inRNN2<<distanceCurrentBox<<" "<<angleCurrentBox;
+		inRNN2<<" ";
+		inRNN2<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
+		inRNN2<<" ";
+		if (prevhaveTarget) inRNN2<<"1";
+		else inRNN2<<"0";
+		inRNN2<<"\n";
+	}
 /*	
 	inCSMTL<<" ";
 	inCSMTL<<prevMotorLeft<<" "<<prevMotorRight;	
@@ -449,7 +468,8 @@ void ASLController::store(){
 	outCSMTL<<"\n";
 */	
 	
-  	inRNN.close();  	
+  	inRNN.close();
+  	inRNN2.close();	
 	outRNN.close();
   	inCSMTL.close();  	
 	outCSMTL.close();
