@@ -52,6 +52,8 @@ std::vector<AbstractObstacle*> relative_sensor_obst;
 Primitives grippables;
 Primitives boxPrimitives;
 
+int runs = 10;
+
 
 class ThisSim : public Simulation {
 public:
@@ -346,8 +348,8 @@ public:
 
 		qcontroller->setReset(false);
 
-
-		return true;
+		if (currentCycle < runs) return true;
+		else return false;
 
 	}
 	
