@@ -391,12 +391,24 @@ void ASLController::store(){
 	inRNN2.open (inRNNname2.c_str(), ios::app);
 	inRNN2.precision(5);
 	inRNN2<<fixed;
-	
+
 //	std::string outRNNname = "../data/outRNN" + std::to_string(runNumber) + ".txt";
-	std::string outRNNname = "../data/outRNN.txt";	
+	std::string outRNNname = "../data/outRNN_binary.txt";	
 	outRNN.open (outRNNname.c_str(), ios::app);
 	outRNN.precision(5);
 	outRNN<<fixed;
+
+	std::string inRNNname3 = "../data/inRNN_12.txt";
+	inRNN3.open (inRNNname3.c_str(), ios::app);
+	inRNN3.precision(5);
+	inRNN3<<fixed;
+
+	std::string outRNNname3 = "../data/outRNN_scalar.txt";	
+	outRNN3.open (outRNNname3.c_str(), ios::app);
+	outRNN3.precision(5);
+	outRNN3<<fixed;
+	
+
 /*	
 	std::string inCSMTLname = "../data/inCSMTL" + std::to_string(runNumber) + ".txt";
 	inCSMTL.open (inCSMTLname.c_str(), ios::app);
@@ -408,9 +420,14 @@ void ASLController::store(){
 	outCSMTL.precision(5);
 	outCSMTL<<fixed;
 */
-	int repetitions = 1;
+	int repetitions = 1; /* this is used to repeat data where the state changes
 	if (prevState != state) repetitions= 100;
+	*********/
 	for (int a=0;a<repetitions;a++){
+
+/***********
+** this stores with binary states
+***********/
 		for (int i=0;i<7;i++){
 	//	for (int i=0;i<3;i++){
 			if (i == prevState)	inRNN<<"1";
@@ -429,7 +446,15 @@ void ASLController::store(){
 	//		else inCSMTL<<"0";
 	//		if (i<6) inCSMTL<<" ";
 		}
-	
+
+
+/***********
+** this stores with 1 state
+***********/
+		double multiplier = 0.1;
+		inRNN3<<prevState*multiplier<<" ";
+		outRNN3<<state*multiplier<<"\n";
+/**********/	
 
 		inRNN<<prevMotorLeft<<" "<<prevMotorRight;	
 		inRNN<<" ";
@@ -450,6 +475,16 @@ void ASLController::store(){
 		if (prevhaveTarget) inRNN2<<"1";
 		else inRNN2<<"0";
 		inRNN2<<"\n";
+
+		inRNN3<<prevMotorLeft<<" "<<prevMotorRight;	
+		inRNN3<<" ";
+		inRNN3<<distanceCurrentBox<<" "<<angleCurrentBox;
+		inRNN3<<" ";
+		inRNN3<<irLeftLong<<" "<<irRightLong<<" "<<irLeftShort<<" "<<irRightShort<<" "<<irFrontLeft<<" "<<irFrontRight;
+		inRNN3<<" ";
+		if (prevhaveTarget) inRNN3<<"1";
+		else inRNN3<<"0";
+		inRNN3<<"\n";
 	}
 /*	
 	inCSMTL<<" ";
@@ -470,9 +505,11 @@ void ASLController::store(){
 	
   	inRNN.close();
   	inRNN2.close();	
+  	inRNN3.close();	
 	outRNN.close();
-  	inCSMTL.close();  	
-	outCSMTL.close();
+	outRNN3.close();
+// 	inCSMTL.close();  	
+//	outCSMTL.close();
 }
 
 void ASLController::storeBySkillCSMTL(){

@@ -71,8 +71,10 @@ class ASLController : public AbstractController {
 	int prevState;
 	// files for storing
 	std::ofstream inRNN;
-	std::ofstream inRNN2;	
+	std::ofstream inRNN2;
+	std::ofstream inRNN3;
 	std::ofstream outRNN;
+	std::ofstream outRNN3;
 	std::ofstream inCSMTL;
 	std::ofstream outCSMTL;
 	int runNumber;
